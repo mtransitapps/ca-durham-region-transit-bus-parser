@@ -144,7 +144,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			} else if ("910C".equalsIgnoreCase(gRoute.getRouteId())) {
 				return "Campus Connect";
 			}
-
 			System.out.printf("\nUnexptected route long name for %s!\n", gRoute);
 			System.exit(-1);
 			return null;
@@ -212,6 +211,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			case 601: return "2D4CA3";
 			case 701: return null; // TODO ???
 			case 801: return "4EA3DD";
+			case 890: return null; // TODO ???
 			case 900: return "DE581E";
 			case 910: return "75AC95";
 			case 915: return "36612B";
@@ -299,105 +299,105 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Beach Rd") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Drey Pick:1", "King Parr:1", "Ajax Go8:11" })) //
+						Arrays.asList(new String[] { "Drey Pick:1", "King Parr:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:11", "Bayl Port2:1", "Drey Pick:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Bayl Port2:1", "Drey Pick:1" })) //
 				.compileBothTripSort());
 		map2.put(218l + RID_ENDS_WITH_D, new RouteTripSpec(218l + RID_ENDS_WITH_D, // 218D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, " Audley Rd") // Pickering Beach Rd
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Audley Rd") // Pickering Beach Rd
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ashb Audl:1", "Bayl Port2:1", "Ajax Go8:6" })) //
+						Arrays.asList(new String[] { "Ashb Audl:1", "Bayl Port2:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:6", "King Parr:1", "Drey Pick:1", "Ashb Audl:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "King Parr:1", "Drey Pick:1", "Ashb Audl:1" })) //
 				.compileBothTripSort());
 		map2.put(219l, new RouteTripSpec(219l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "North Ajax", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:7", "Rave Hyde1:1", "Will West2:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Rave Hyde1:1", "Will West2:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Will West2:1", "Segg Will:1", "Ajax Go8:7" })) //
+						Arrays.asList(new String[] { "Will West2:1", "Segg Will:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(219l + RID_ENDS_WITH_D, new RouteTripSpec(219l + RID_ENDS_WITH_D, // 219D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "North Ajax", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:9", "Rave Hyde1:1", "Will Segg:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Rave Hyde1:1", "Will Segg:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Will Segg:1", "Chur Dela1:1", "Ajax Go8:9" })) //
+						Arrays.asList(new String[] { "Will Segg:1", "Chur Dela1:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(221l, new RouteTripSpec(221l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Central Ajax Loop", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:10", "Grif Turr:1", "Ross West1:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Grif Turr:1", "Ross West1:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ross West1:1", "Cole Chap:1", "Ajax Go8:10" })) //
+						Arrays.asList(new String[] { "Ross West1:1", "Cole Chap:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(221l + RID_ENDS_WITH_D, new RouteTripSpec(221l + RID_ENDS_WITH_D, // 221D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Central Ajax Loop", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:7", "Grif Turr:1", "Ross West1:1", "Cole Chap:1", "Harw Gard:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Grif Turr:1", "Ross West1:1", "Cole Chap:1", "Harw Gard:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Harw Gard:1", "Mona Clem1:1", "Ajax Go8:7" })) //
+						Arrays.asList(new String[] { "Harw Gard:1", "Mona Clem1:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(222l, new RouteTripSpec(222l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Audley South") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Bayl Harw1:1", "Audl Upch:1", "Ajax Go8:6" })) //
+						Arrays.asList(new String[] { "Bayl Harw1:1", "Audl Upch:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:6", "Bayl Mack1:1", "Bayl Harw1:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Bayl Mack1:1", "Bayl Harw1:1" })) //
 				.compileBothTripSort());
 		map2.put(224l, new RouteTripSpec(224l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lk Driveway") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Lake Harw:1", "Harw Bayl1:1", "Ajax Go8:12" })) //
+						Arrays.asList(new String[] { "Lake Harw:1", "Harw Bayl1:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:12", "Harw West2:1", "Lake Harw:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Harw West2:1", "Lake Harw:1" })) //
 				.compileBothTripSort());
 		map2.put(224l + RID_ENDS_WITH_D, new RouteTripSpec(224l + RID_ENDS_WITH_D, // 224D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lk Driveway") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Lake Harw:1", "Finl Lake:1", "West Clem:1", "Ajax Go8:8" })) //
+						Arrays.asList(new String[] { "Lake Harw:1", "Finl Lake:1", "West Clem:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:8", "Harw West2:1", "Lake Harw:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Harw West2:1", "Lake Harw:1" })) //
 				.compileBothTripSort());
 		map2.put(225l, new RouteTripSpec(225l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:13", "Adam Chad:1", "King Sale3:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Adam Chad:1", "King Sale3:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "King Sale3:1", "Taun Midd2:1", "Ajax Go8:13" })) //
+						Arrays.asList(new String[] { "King Sale3:1", "Taun Midd2:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(225l + RID_ENDS_WITH_A, new RouteTripSpec(225l + RID_ENDS_WITH_A, // 225A
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:13", "Adam Chad:1", "Ross Harw1:1", "Harw Will1:1", "Taun Sale1:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Adam Chad:1", "Ross Harw1:1", "Harw Will1:1", "Taun Sale1:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Taun Sale1:1", "Turn Kerr:1", "Ajax Go8:13" })) //
+						Arrays.asList(new String[] { "Taun Sale1:1", "Turn Kerr:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(226l, new RouteTripSpec(226l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lk Driveway") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Lake Bart:1", "West Full:1", "Ajax Go8:8" })) //
+						Arrays.asList(new String[] { "Lake Bart:1", "West Full:1", "Ajax Go8:5" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:8", "Finl Chis:1", "Lake Bart:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Finl Chis:1", "Lake Bart:1" })) //
 				.compileBothTripSort());
 		map2.put(232l, new RouteTripSpec(232l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Rossland", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:9", "Chur Meek2:1", "Rave Ross2:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Chur Meek2:1", "Rave Ross2:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Rave Ross2:1", "Chur Sher1:1", "Ajax Go8:9" })) //
+						Arrays.asList(new String[] { "Rave Ross2:1", "Chur Sher1:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(301l, new RouteTripSpec(301l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
@@ -546,6 +546,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { "7A Scug2:1", "Simc Gree2:1", "Curt Wate1:1" })) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { "Curt Wate1:1", "Simc Beec:1", "7A Scug2:1" })) //
+				.compileBothTripSort());
+		map2.put(890l, new RouteTripSpec(890l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Pkwy Terminal", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Sta") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "Pick GO1:1", "Pick Term1:1" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "Pick Term1:1", "Pick GO1:1" })) //
 				.compileBothTripSort());
 		map2.put(910l, new RouteTripSpec(910l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Durham College UOIT", //
