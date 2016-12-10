@@ -29,8 +29,10 @@ import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
 
-// http://www.durham.ca/corpservices.asp?nr=/departments/corpservices/it/gis/opendata.htm&setFooter=/includes/GISfooter.inc
-// https://maps.durham.ca/OpenData/GTFS_Durham_TXT.zip
+// http://www.durham.ca/corpservices.asp?nr=/departments/corpservices/it/gis/opendatalicense.htm&setFooter=/includes/GISfooter.inc
+// http://opendata.durham.ca/
+// http://opendata.durham.ca/datasets?t=Durham%20Transportation
+// https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
 public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
@@ -135,10 +137,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
 			if ("101A".equalsIgnoreCase(gRoute.getRouteId())) {
 				return "Industrial Bay Ridges";
+			} else if ("219C".equalsIgnoreCase(gRoute.getRouteId())) {
+				return "Ravenscroft";
+			} else if ("232".equalsIgnoreCase(gRoute.getRouteId())) {
+				return "Church";
+			} else if ("308C".equalsIgnoreCase(gRoute.getRouteId())) {
+				return "Whitby Shores";
 			} else if ("310".equalsIgnoreCase(gRoute.getRouteId())) {
 				return "Brooklin / UOIT & DC";
 			} else if ("401C".equalsIgnoreCase(gRoute.getRouteId())) {
 				return "Simcoe";
+			} else if ("417".equalsIgnoreCase(gRoute.getRouteId())) {
+				return "Conlin";
 			} else if ("506".equalsIgnoreCase(gRoute.getRouteId())) {
 				return "Wilmot Crk Orono Newcastle"; // Community Bus
 			} else if ("910C".equalsIgnoreCase(gRoute.getRouteId())) {
@@ -600,6 +610,22 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"Uoit Simc1:1", "Thor Ross2:1", "Oc   Elmg3:1", "Whit Go1:1" //
 						})) //
+				.compileBothTripSort());
+		map2.put(930l, new RouteTripSpec(930l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Cannington", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Deer Creek") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "Deer Cree1", "Came Coun:1" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "Came Ann:1", "Deer Cree1" })) //
+				.compileBothTripSort());
+		map2.put(931l, new RouteTripSpec(931l, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Beaverton", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Deer Creek") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { "Deer Cree1", "9Mil Lake:1" })) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { "9Mil Lake:1", "Deer Cree1" })) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
