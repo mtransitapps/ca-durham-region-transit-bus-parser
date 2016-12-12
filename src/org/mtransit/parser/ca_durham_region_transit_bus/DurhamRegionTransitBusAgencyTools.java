@@ -103,6 +103,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
+		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
+			return Long.parseLong(gRoute.getRouteShortName());
+		}
 		if (!Utils.isDigitsOnly(gRoute.getRouteId())) {
 			Matcher matcher = DIGITS.matcher(gRoute.getRouteId());
 			if (matcher.find()) {
@@ -545,20 +548,25 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Uxbridge") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"Welw Toro:1", "RR1 Rave1:1", //
+						"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
+								"1st Broc1", // !=
+								"Broc Main2:1", // ==
+								"Main Dall1:1", // !=
+								"RR1 Rave1:1", // REGIONAL RD. 1 @ RAVENSHOE n ns
 								"RR23 Sara:1", // !=
-								"Main Beav:1", // ==
-								"Simc John3:1", // ==
-								"9Mil Lake:1" // !=
+								"9Mil Lake:1" // 9 MILE @ LAKEVIEW MANNOR n ns
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9Mil Lake:1", //
+						"9Mil Lake:1", // 9 MILE @ LAKEVIEW MANNOR n ns
 								"Main Mill1:1", // !=
-								"Main Beav:1", // ==
-								"Simc John3:1", // ==
 								"RR23 Sara1:1", // !=
-								"RR1 Rave2:1", "Toro Broc2:1", "Welw Toro:1" //
+								"RR1 Rave2:1", // REGIONAL RD. 1 @ RAVENSHOE s fs
+								"Firs Broc:1", // !=
+								"Broc Main2:1", // ==
+								"Toro Albe:1", // != TORONTO NORTHBOUND @ ALBERT
+								"Toro Broc2:1", // != TORONTO SOUTHBOUND @ BROCK ST
+								"Welw Toro:1" // WELWOOD EASTBOUND @ 6 WELWOOD
 						})) //
 				.compileBothTripSort());
 		map2.put(701l, new RouteTripSpec(701l, //
@@ -593,11 +601,11 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.compileBothTripSort());
 		map2.put(890l, new RouteTripSpec(890l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Pkwy Terminal", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Sta") //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Pick GO1:1", "Pick Term1:1" })) //
+						Arrays.asList(new String[] { "Ajax Go8:5", "Pick Term1:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Pick Term1:1", "Pick GO1:1" })) //
+						Arrays.asList(new String[] { "Pick Term1:1", "Ajax Go8:5" })) //
 				.compileBothTripSort());
 		map2.put(910l, new RouteTripSpec(910l, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Durham College UOIT", //
