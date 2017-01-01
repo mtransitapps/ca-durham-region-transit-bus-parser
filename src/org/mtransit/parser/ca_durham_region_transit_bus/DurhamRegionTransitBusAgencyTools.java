@@ -175,7 +175,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		if (Utils.isDigitsOnly(gRoute.getRouteId())) {
+		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
 			int rsn = Integer.parseInt(gRoute.getRouteShortName());
 			switch (rsn) {
 			// @formatter:off
@@ -227,6 +227,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			case 412: return "85D168";
 			case 414: return "CE92CF";
 			case 416: return "EC5788";
+			case 417: return "74459B";
 			case 501: return "2D4CA3";
 			case 502: return "5FC3F0";
 			case 506: return "F14823";
@@ -269,6 +270,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return null; // TODO ???
 		} else if ("218D".equalsIgnoreCase(gRoute.getRouteId())) {
 			return "988FD0"; // 218
+		} else if ("219C".equalsIgnoreCase(gRoute.getRouteId())) {
+			return "4D71C1"; // 219
 		} else if ("219D".equalsIgnoreCase(gRoute.getRouteId())) {
 			return "4D71C1"; // 219
 		} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteId())) {
@@ -285,6 +288,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return "6345A6"; // 226 // TODO ?
 		} else if ("232S".equalsIgnoreCase(gRoute.getRouteId())) {
 			return "EE2428"; // 232 // TODO ?
+		} else if ("308C".equalsIgnoreCase(gRoute.getRouteId())) {
+			return "AC57B2"; // 308
 		} else if ("318SH".equalsIgnoreCase(gRoute.getRouteId())) {
 			return "9BA821"; // 318 // TODO ?
 		} else if ("401B".equalsIgnoreCase(gRoute.getRouteId())) {
@@ -697,10 +702,10 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 223l) {
 			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Pickering Beach", mTrip.getHeadsignId());
 				return true;
 			} else if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Pickering Beach", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 291l) {
@@ -789,14 +794,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 922l) {
 			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
 				return true;
 			} else if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 950l) {
-			if (mTrip.getHeadsignId() == 1) {
+			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
 				return true;
 			}
