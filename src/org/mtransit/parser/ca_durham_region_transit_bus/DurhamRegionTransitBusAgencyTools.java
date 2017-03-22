@@ -106,25 +106,25 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
 			return Long.parseLong(gRoute.getRouteShortName());
 		}
-		if (!Utils.isDigitsOnly(gRoute.getRouteId())) {
-			Matcher matcher = DIGITS.matcher(gRoute.getRouteId());
+		if (!Utils.isDigitsOnly(gRoute.getRouteShortName())) {
+			Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
 			if (matcher.find()) {
 				int digits = Integer.parseInt(matcher.group());
-				String routeIdLC = gRoute.getRouteId().toLowerCase(Locale.ENGLISH);
-				if (routeIdLC.endsWith("cs")) {
+				String rsnLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
+				if (rsnLC.endsWith("cs")) {
 					return digits + RID_ENDS_WITH_CS;
-				} else if (routeIdLC.endsWith("sh")) {
+				} else if (rsnLC.endsWith("sh")) {
 					return digits + RID_ENDS_WITH_SH;
 				}
-				if (routeIdLC.endsWith("a")) {
+				if (rsnLC.endsWith("a")) {
 					return digits + RID_ENDS_WITH_A;
-				} else if (routeIdLC.endsWith("b")) {
+				} else if (rsnLC.endsWith("b")) {
 					return digits + RID_ENDS_WITH_B;
-				} else if (routeIdLC.endsWith("c")) {
+				} else if (rsnLC.endsWith("c")) {
 					return digits + RID_ENDS_WITH_C;
-				} else if (routeIdLC.endsWith("d")) {
+				} else if (rsnLC.endsWith("d")) {
 					return digits + RID_ENDS_WITH_D;
-				} else if (routeIdLC.endsWith("s")) {
+				} else if (rsnLC.endsWith("s")) {
 					return digits + RID_ENDS_WITH_S;
 				}
 				System.out.printf("\nUnexptected route ID for %s!\n", gRoute);
@@ -138,23 +138,23 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
-			if ("101A".equalsIgnoreCase(gRoute.getRouteId())) {
+			if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Industrial Bay Ridges";
-			} else if ("219C".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("219C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Ravenscroft";
-			} else if ("232".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("232".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Church";
-			} else if ("308C".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("308C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Whitby Shores";
-			} else if ("310".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("310".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Brooklin / UOIT & DC";
-			} else if ("401C".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("401C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Simcoe";
-			} else if ("417".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("417".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Conlin";
-			} else if ("506".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("506".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Wilmot Crk Orono Newcastle"; // Community Bus
-			} else if ("910C".equalsIgnoreCase(gRoute.getRouteId())) {
+			} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Campus Connect";
 			}
 			System.out.printf("\nUnexptected route long name for %s!\n", gRoute);
@@ -246,75 +246,75 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			// @formatter:on
 			}
 		}
-		if ("101A".equalsIgnoreCase(gRoute.getRouteId())) {
+		if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "6345A6"; // 101
-		} else if ("103B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("103B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "A7516D";
-		} else if ("110A".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("110A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "231F20"; // 110
-		} else if ("110B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("110B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "7ACD5A";
-		} else if ("110sh".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("110sh".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "231F20"; // 110 // TODO ?
-		} else if ("111A".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("111A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "6AA5D9"; // 111
-		} else if ("111S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("111S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "6AA5D9"; // 111 // TODO ?
-		} else if ("112CS".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("112CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "EE2428"; // 112 // TODO ?
-		} else if ("112SH".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("112SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "EE2428"; // 112 // TODO ?
-		} else if ("193A".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("193A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return null; // TODO ???
-		} else if ("193B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("193B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return null; // TODO ???
-		} else if ("218D".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("218D".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "988FD0"; // 218
-		} else if ("219C".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("219C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "4D71C1"; // 219
-		} else if ("219D".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("219D".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "4D71C1"; // 219
-		} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "4D71C1"; // 219 // TODO ?
-		} else if ("221D".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("221D".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "F3B722"; // 221
-		} else if ("224D".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("224D".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "64C430"; // 224
-		} else if ("224DSH".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("224DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "64C430"; // 224 // TODO ?
-		} else if ("225A".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("225A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "9A8D7D"; // 225
-		} else if ("226S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("226S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "6345A6"; // 226 // TODO ?
-		} else if ("232S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("232S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "EE2428"; // 232 // TODO ?
-		} else if ("308C".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("308C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "AC57B2"; // 308
-		} else if ("318SH".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("318SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "9BA821"; // 318 // TODO ?
-		} else if ("401B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("401B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "8AD9F2";
-		} else if ("401C".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("401C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "6C57B1";
-		} else if ("402B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("402B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "9BA821";
-		} else if ("407S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("407S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "AAA8A9"; // 407 // TODO ?
-		} else if ("407C".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("407C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "AAA8A9"; // 407 // TODO ?
-		} else if ("407CS".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("407CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "AAA8A9"; // 407 // TODO ?
-		} else if ("410S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("410S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "A14A94"; // 410 // TODO ?
-		} else if ("411S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("411S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "536DBE"; // 411 // TODO ?
-		} else if ("412S".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("412S".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "85D168"; // 412 // TODO ?
-		} else if ("412CS".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("412CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "85D168"; // 412 // TODO ?
-		} else if ("910C".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "9BA821";
-		} else if ("922B".equalsIgnoreCase(gRoute.getRouteId())) {
+		} else if ("922B".equalsIgnoreCase(gRoute.getRouteShortName())) {
 			return "3DA87F";
 		}
 		System.out.printf("\nUnexpected route color %s!\n", gRoute);
@@ -695,11 +695,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString("William Jackson Dr", mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 181l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Pickering West", mTrip.getHeadsignId());
-				return true;
-			}
 		} else if (mTrip.getRouteId() == 223l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Pickering Beach", mTrip.getHeadsignId());
@@ -740,56 +735,15 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
 				return true;
-			} else if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Oshawa Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 407l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Colonel Sam Dr", mTrip.getHeadsignId());
-				return true;
 			}
 		} else if (mTrip.getRouteId() == 412l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 414l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Oshawa", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 501l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Aspen Spgs Loop", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 502l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Liberty Loop", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 506l) {
-			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Orono", mTrip.getHeadsignId());
-				return true;
-			} else if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Bowmanville", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 910l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
 		} else if (mTrip.getRouteId() == 915l) {
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Durham College UOIT", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 916l) {
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 922l) {
@@ -802,22 +756,12 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 950l) {
 			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
+				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId()); // Toronto & Welwood
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 103l + RID_ENDS_WITH_B) { // 103B
 			if (mTrip.getHeadsignId() == 0) {
 				mTrip.setHeadsignString("Pickering Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 402l + RID_ENDS_WITH_B) { // 402B
-			if (mTrip.getHeadsignId() == 0) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 110l + RID_ENDS_WITH_SH) { // 110SH
-			if (mTrip.getHeadsignId() == 1) {
-				mTrip.setHeadsignString("Pickering West", mTrip.getHeadsignId());
 				return true;
 			}
 		}
