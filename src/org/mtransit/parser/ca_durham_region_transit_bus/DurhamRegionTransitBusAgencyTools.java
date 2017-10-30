@@ -337,7 +337,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(1, //
 						Arrays.asList(new String[] { //
 						"Pick GO1:1", // PICKERING STATION
-								"Live Annl1:1", // ++
+								"Live Annl1:1", "Live Annl1:1_merged_922697", // ++
 								"Mont Broc:1", // MONTGOMERY PARK EASTBOUND @ BROCK RD
 						})) //
 				.compileBothTripSort());
@@ -361,9 +361,15 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Harwood") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { "Drey Park:1", "Ajax Go8:5" })) //
+						Arrays.asList(new String[] { //
+						"Drey Park:1", //
+								"Ajax Go8:5" //
+						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:5", "Drey Harw2:1" })) //
+						Arrays.asList(new String[] { //
+						"Ajax Go8:5", //
+								"Drey Harw2:1", "Drey Harw2:1_merged_922885" //
+						})) //
 				.compileBothTripSort());
 		map2.put(218l + RID_ENDS_WITH_D, new RouteTripSpec(218l + RID_ENDS_WITH_D, // 218D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
@@ -417,9 +423,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Kerrison", //
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { "Ajax Go8:5", "PBea Bayl:1", "Keri Sale2:1" })) //
+						Arrays.asList(new String[] { //
+						"Ajax Go8:5", //
+								"PBea Bayl:1", "PBea Bayl:1_merged_922894", //
+								"Keri Sale2:1", "Keri Sale2:1_merged_922679", //
+						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { "Keri Sale2:1", "Sale King2:1", "Sale Bayl2:1", "Ajax Go8:5" })) //
+						Arrays.asList(new String[] { //
+						"Keri Sale2:1", "Keri Sale2:1_merged_922679", //
+								"Sale King2:1", //
+								"Sale Bayl2:1", "Sale Bayl2:1_merged_922985", //
+								"Ajax Go8:5", //
+						})) //
 				.compileBothTripSort());
 		map2.put(224l + RID_ENDS_WITH_D, new RouteTripSpec(224l + RID_ENDS_WITH_D, // 224D
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
@@ -577,11 +592,12 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						"Chur Temp1:1", //
 								"Simp King:1", "Simp King:1_merged_922245", //
 								"Mear Conc1:1", //
-								"Long Libe:1", //
+								"Long Libe:1", "Long Libe:1_merged_923040", //
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Long Libe:1", "Chur Temp1:1" //
+						"Long Libe:1", "Long Libe:1_merged_923040", //
+								"Chur Temp1:1", //
 						})) //
 				.compileBothTripSort());
 		map2.put(506l, new RouteTripSpec(506l, //
@@ -589,11 +605,19 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orono") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Main Wint:1", "Nort Grad:1", "Lake Wate:1", "Bowm Prin:1" //
+						"Main Wint:1", "Main Wint:1_merged_922998", //
+								"Nort Grad:1", //
+								"Lake Wate:1", "Lake Wate:1_merged_922662", //
+								"Bowm Prin:1", //
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Bowm Prin:1", "Libe Vict:1", "Lake Wate:1", "Pete Taun:1", "Main Mill:1", "Main Wint:1" //
+						"Bowm Prin:1", //
+								"Libe Vict:1", //
+								"Lake Wate:1", "Lake Wate:1_merged_922662", //
+								"Pete Taun:1", //
+								"Main Mill:1", //
+								"Main Wint:1", "Main Wint:1_merged_922998", //
 						})) //
 				.compileBothTripSort());
 		map2.put(601l, new RouteTripSpec(601l, //
@@ -607,21 +631,21 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"RR1 Rave1:1", // REGIONAL RD. 1 @ RAVENSHOE n ns
 								"Albe Rive:1", // "2530", // ALBERT NORTHBOUND @ RIVER
 								"RR23 Sara:1", // !=
-								"Hw12 RR15:1", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
-								"9Mil Lake:1" // 9 MILE @ LAKEVIEW MANNOR n ns
+								"Hw12 RR15:1", "Hw12 RR15:1_merged_922928", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
+								"9Mil Lake:1", "9Mil Lake:1_merged_922694", // 9 MILE @ LAKEVIEW MANNOR n ns
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9Mil Lake:1", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
+						"9Mil Lake:1", "9Mil Lake:1_merged_922694", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
 								"Main Mill1:1", // !=
 								"RR23 Sara1:1", // !=
-								"Albe Jone1:1", // "3193", // ALBERT @ JONES s fs
+								"Albe Jone1:1", "Albe Jone1:1_merged_922763", // "3193", // ALBERT @ JONES s fs
 								"RR1 Rave2:1", // REGIONAL RD. 1 @ RAVENSHOE s fs
 								"Firs Broc:1", // !=
 								"Broc Main2:1", // ==
 								"Toro Broc4:1", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
 								"Toro Broc2:1", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
-								"Welw Toro:1" // WELWOOD EASTBOUND @ 6 WELWOOD
+								"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
 						})) //
 				.compileBothTripSort());
 		map2.put(653l, new RouteTripSpec(653l, //
@@ -650,7 +674,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
 						"Ange Kent21", // "3429", // ANGELINE SOUTHBOUND @ KENT
-								"Came Ann1:1", // "93549", // CAMERON @ ANN w ns {44
+								"Came Ann1:1", "Came Ann1:1_merged_923050", // "93549", // CAMERON @ ANN w ns {44
 						})) //
 				.compileBothTripSort());
 		map2.put(701l, new RouteTripSpec(701l, //
@@ -945,7 +969,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String cleanStopName(String gStopName) {
-		gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		if (Utils.isUppercaseOnly(gStopName, true, true)) {
+			gStopName = gStopName.toLowerCase(Locale.ENGLISH);
+		}
 		gStopName = UOIT.matcher(gStopName).replaceAll(UOIT_REPLACEMENT);
 		gStopName = NORTHBOUND.matcher(gStopName).replaceAll(NORTHBOUND_REPLACEMENT);
 		gStopName = SOUTHBOUND.matcher(gStopName).replaceAll(SOUTHBOUND_REPLACEMENT);
@@ -962,41 +988,43 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		if (!StringUtils.isEmpty(gStop.getStopCode()) && Utils.isDigitsOnly(gStop.getStopCode())) {
 			return Integer.parseInt(gStop.getStopCode()); // use stop code as stop ID
 		}
-		if (gStop.getStopId().equalsIgnoreCase("Stro Tree1:1")) {
+		String stopId = gStop.getStopId();
+		stopId = CleanUtils.cleanMergedID(stopId);
+		if (stopId.equalsIgnoreCase("Stro Tree1:1")) {
 			return 1000001546;
-		} else if (gStop.getStopId().equalsIgnoreCase("King Live3:1")) {
+		} else if (stopId.equalsIgnoreCase("King Live3:1")) {
 			return 1000001609;
-		} else if (gStop.getStopId().equalsIgnoreCase("Came Ann1:1")) {
+		} else if (stopId.equalsIgnoreCase("Came Ann1:1")) {
 			return 1000002533;
-		} else if (gStop.getStopId().equalsIgnoreCase("Audl Horn:1")) {
+		} else if (stopId.equalsIgnoreCase("Audl Horn:1")) {
 			return 1000000001;
-		} else if (gStop.getStopId().equalsIgnoreCase("OldK Eliz:1")) {
+		} else if (stopId.equalsIgnoreCase("OldK Eliz:1")) {
 			return 1000000002;
-		} else if (gStop.getStopId().equalsIgnoreCase("Stev Crei1:1")) {
+		} else if (stopId.equalsIgnoreCase("Stev Crei1:1")) {
 			return 1000000003;
-		} else if (gStop.getStopId().equalsIgnoreCase("Harm Capr:1")) {
+		} else if (stopId.equalsIgnoreCase("Harm Capr:1")) {
 			return 1000000004;
-		} else if (gStop.getStopId().equalsIgnoreCase("Park Buen:1")) {
+		} else if (stopId.equalsIgnoreCase("Park Buen:1")) {
 			return 1000000005;
-		} else if (gStop.getStopId().equalsIgnoreCase("Main Duch:1")) {
+		} else if (stopId.equalsIgnoreCase("Main Duch:1")) {
 			return 1000000006;
-		} else if (gStop.getStopId().equalsIgnoreCase("Main Wint:1")) {
+		} else if (stopId.equalsIgnoreCase("Main Wint:1")) {
 			return 1000000007;
-		} else if (gStop.getStopId().equalsIgnoreCase("Adel Came:1")) {
+		} else if (stopId.equalsIgnoreCase("Adel Came:1")) {
 			return 1000000008;
-		} else if (gStop.getStopId().equalsIgnoreCase("Broc Quak:1")) {
+		} else if (stopId.equalsIgnoreCase("Broc Quak:1")) {
 			return 1000000009;
-		} else if (gStop.getStopId().equalsIgnoreCase("Main Dall:1")) {
+		} else if (stopId.equalsIgnoreCase("Main Dall:1")) {
 			return 1000000010;
-		} else if (gStop.getStopId().equalsIgnoreCase("Audl Horn1:1")) {
+		} else if (stopId.equalsIgnoreCase("Audl Horn1:1")) {
 			return 1000000011;
-		} else if (gStop.getStopId().equalsIgnoreCase("Wils Shak1:1")) {
+		} else if (stopId.equalsIgnoreCase("Wils Shak1:1")) {
 			return 1000000012;
-		} else if (gStop.getStopId().equalsIgnoreCase("Wils Shak:1")) {
+		} else if (stopId.equalsIgnoreCase("Wils Shak:1")) {
 			return 1000000013;
-		} else if (gStop.getStopId().equalsIgnoreCase("Base RR5711")) {
+		} else if (stopId.equalsIgnoreCase("Base RR5711")) {
 			return 1000000014;
-		} else if (gStop.getStopId().equalsIgnoreCase("Shoa Marj11")) {
+		} else if (stopId.equalsIgnoreCase("Shoa Marj11")) {
 			return 1000000015;
 		}
 		System.out.printf("\nUnexptected stop ID for %s!\n", gStop);
