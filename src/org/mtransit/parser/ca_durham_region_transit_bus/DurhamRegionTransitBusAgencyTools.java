@@ -337,7 +337,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(1, //
 						Arrays.asList(new String[] { //
 						"Pick GO1:1", // PICKERING STATION
-								"Live Annl1:1", "Live Annl1:1_merged_922697", // ++
+								"Live Annl1:1", "Live Annl1:1_merged_991661", // ++
 								"Mont Broc:1", // MONTGOMERY PARK EASTBOUND @ BROCK RD
 						})) //
 				.compileBothTripSort());
@@ -368,7 +368,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Ajax Go8:5", //
-								"Drey Harw2:1", "Drey Harw2:1_merged_922885" //
+								"Drey Harw2:1", "Drey Harw2:1_merged_991853" //
 						})) //
 				.compileBothTripSort());
 		map2.put(218l + RID_ENDS_WITH_D, new RouteTripSpec(218l + RID_ENDS_WITH_D, // 218D
@@ -424,16 +424,16 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Ajax Go8:5", //
-								"PBea Bayl:1", "PBea Bayl:1_merged_922894", //
-								"Keri Sale2:1", "Keri Sale2:1_merged_922679", //
+						"Ajax Go8:5", // "2569", // AJAX STATION
+								"PBea Bayl:1", "PBea Bayl:1_merged_991862", // "3048", // PICKERING BEACH NORTHBOUND @ BAYLY
+								"Keri Sale2:1", "Keri Sale2:1_merged_991640", // "3028", // KERRISON EASTBOUND @ SALEM
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Keri Sale2:1", "Keri Sale2:1_merged_922679", //
-								"Sale King2:1", //
-								"Sale Bayl2:1", "Sale Bayl2:1_merged_922985", //
-								"Ajax Go8:5", //
+						"Keri Sale2:1", "Keri Sale2:1_merged_991640", // "3028", // KERRISON EASTBOUND @ SALEM
+								"Sale King2:1", // "93151", // SALEM SOUTHBOUND @ KINGSTON
+								"Sale Bayl2:1", "Sale Bayl2:1_merged_991952", // "3053", // SALEM SOUTHBOUND @ BAYLY
+								"Ajax Go8:5", // "2569", // AJAX STATION
 						})) //
 				.compileBothTripSort());
 		map2.put(224l + RID_ENDS_WITH_D, new RouteTripSpec(224l + RID_ENDS_WITH_D, // 224D
@@ -589,15 +589,15 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Brookhill") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Chur Temp1:1", //
-								"Simp King:1", "Simp King:1_merged_922245", //
+						"Chur Temp1:1", // "1480", // CHURCH EASTBOUND @ TEMPERANCE
+								"Simp King:1", "Simp King:1_merged_922245", // "1498", // SIMPSON NORTHBOUND @ KING
 								"Mear Conc1:1", //
-								"Long Libe:1", "Long Libe:1_merged_923040", //
+								"Long Libe:1", "Long Libe:1_merged_992007", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Long Libe:1", "Long Libe:1_merged_923040", //
-								"Chur Temp1:1", //
+						"Long Libe:1", "Long Libe:1_merged_992007", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
+								"Chur Temp1:1", // "1480", // CHURCH EASTBOUND @ TEMPERANCE
 						})) //
 				.compileBothTripSort());
 		map2.put(506l, new RouteTripSpec(506l, //
@@ -605,19 +605,19 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orono") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Main Wint:1", "Main Wint:1_merged_922998", //
+						"Main Wint:1", "Main Wint:1_merged_991968", // "93533", // MAIN SOUTHBOUND @ WINTER
 								"Nort Grad:1", //
-								"Lake Wate:1", "Lake Wate:1_merged_922662", //
-								"Bowm Prin:1", //
+								"Lake Wate:1", "Lake Wate:1_merged_991993", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
+								"Bowm Prin:1", // "1450", // BOWMANVILLE PARK AND RIDE
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Bowm Prin:1", //
+						"Bowm Prin:1", // "1450", // BOWMANVILLE PARK AND RIDE
 								"Libe Vict:1", //
-								"Lake Wate:1", "Lake Wate:1_merged_922662", //
+								"Lake Wate:1", "Lake Wate:1_merged_991993", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
 								"Pete Taun:1", //
 								"Main Mill:1", //
-								"Main Wint:1", "Main Wint:1_merged_922998", //
+								"Main Wint:1", "Main Wint:1_merged_991968", // "93533", // MAIN SOUTHBOUND @ WINTER
 						})) //
 				.compileBothTripSort());
 		map2.put(601l, new RouteTripSpec(601l, //
@@ -631,20 +631,20 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"RR1 Rave1:1", // REGIONAL RD. 1 @ RAVENSHOE n ns
 								"Albe Rive:1", // "2530", // ALBERT NORTHBOUND @ RIVER
 								"RR23 Sara:1", // !=
-								"Hw12 RR15:1", "Hw12 RR15:1_merged_922928", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
-								"9Mil Lake:1", "9Mil Lake:1_merged_922694", // 9 MILE @ LAKEVIEW MANNOR n ns
+								"Hw12 RR15:1", "Hw12 RR15:1_merged_991895", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
+								"9Mil Lake:1", "9Mil Lake:1_merged_991926", // 9 MILE @ LAKEVIEW MANNOR n ns
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9Mil Lake:1", "9Mil Lake:1_merged_922694", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
+						"9Mil Lake:1", "9Mil Lake:1_merged_991926", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
 								"Main Mill1:1", // !=
 								"RR23 Sara1:1", // !=
-								"Albe Jone1:1", "Albe Jone1:1_merged_922763", // "3193", // ALBERT @ JONES s fs
+								"Albe Jone1:1", "Albe Jone1:1_merged_991634", // "3193", // ALBERT @ JONES s fs
 								"RR1 Rave2:1", // REGIONAL RD. 1 @ RAVENSHOE s fs
 								"Firs Broc:1", // !=
 								"Broc Main2:1", // ==
-								"Toro Broc4:1", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
-								"Toro Broc2:1", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
+								"Toro Broc4:1", "Toro Broc4:1_merged_991866", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
+								"Toro Broc2:1", "Toro Broc2:1_merged_991885", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
 								"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
 						})) //
 				.compileBothTripSort());
@@ -674,7 +674,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
 						"Ange Kent21", // "3429", // ANGELINE SOUTHBOUND @ KENT
-								"Came Ann1:1", "Came Ann1:1_merged_923050", // "93549", // CAMERON @ ANN w ns {44
+								"Came Ann1:1", "Came Ann1:1_merged_991898", // "93549", // CAMERON @ ANN w ns {44
 						})) //
 				.compileBothTripSort());
 		map2.put(701l, new RouteTripSpec(701l, //
@@ -995,7 +995,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		} else if (stopId.equalsIgnoreCase("King Live3:1")) {
 			return 1000001609;
 		} else if (stopId.equalsIgnoreCase("Came Ann1:1")) {
-			return 1000002533;
+			return 93549;
 		} else if (stopId.equalsIgnoreCase("Audl Horn:1")) {
 			return 1000000001;
 		} else if (stopId.equalsIgnoreCase("OldK Eliz:1")) {
@@ -1026,6 +1026,10 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return 1000000014;
 		} else if (stopId.equalsIgnoreCase("Shoa Marj11")) {
 			return 1000000015;
+		} else if (stopId.equalsIgnoreCase("Ross Chur1")) {
+			return 3430;
+		} else if (stopId.equalsIgnoreCase("Ross South11")) {
+			return 1000000017;
 		}
 		System.out.printf("\nUnexptected stop ID for %s!\n", gStop);
 		System.exit(-1);
