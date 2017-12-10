@@ -337,7 +337,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(1, //
 						Arrays.asList(new String[] { //
 						"Pick GO1:1", // PICKERING STATION
-								"Live Annl1:1", "Live Annl1:1_merged_991661", // ++
+								"Live Annl1:1", "Live Annl1:1_merged_992091", // ++
 								"Mont Broc:1", // MONTGOMERY PARK EASTBOUND @ BROCK RD
 						})) //
 				.compileBothTripSort());
@@ -357,18 +357,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Till Scen:1", // TILLINGS NORTHBOUND @ SCENIC
 						})) //
 				.compileBothTripSort());
-		map2.put(218l, new RouteTripSpec(218l, //
+		map2.put(218L, new RouteTripSpec(218L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Harwood") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"Drey Park:1", //
-								"Ajax Go8:5" //
+						"Drey Park:1", // "2026", // DREYER EASTBOUND @ PARKER
+								"Ajax Go8:5", // "2569", // AJAX STATION
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"Ajax Go8:5", //
-								"Drey Harw2:1", "Drey Harw2:1_merged_991853" //
+						"Ajax Go8:5", // "2569", // AJAX STATION
+								"Drey Harw2:1", "Drey Harw2:1_merged_992283", // "3089", // DREYER @ HARWOOD w ns
 						})) //
 				.compileBothTripSort());
 		map2.put(218l + RID_ENDS_WITH_D, new RouteTripSpec(218l + RID_ENDS_WITH_D, // 218D
@@ -425,14 +425,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
 						"Ajax Go8:5", // "2569", // AJAX STATION
-								"PBea Bayl:1", "PBea Bayl:1_merged_991862", // "3048", // PICKERING BEACH NORTHBOUND @ BAYLY
-								"Keri Sale2:1", "Keri Sale2:1_merged_991640", // "3028", // KERRISON EASTBOUND @ SALEM
+								"PBea Bayl:1", "PBea Bayl:1_merged_992292", // "3048", // PICKERING BEACH NORTHBOUND @ BAYLY
+								"Keri Sale2:1", "Keri Sale2:1_merged_992070", // "3028", // KERRISON EASTBOUND @ SALEM
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Keri Sale2:1", "Keri Sale2:1_merged_991640", // "3028", // KERRISON EASTBOUND @ SALEM
+						"Keri Sale2:1", "Keri Sale2:1_merged_992070", // "3028", // KERRISON EASTBOUND @ SALEM
 								"Sale King2:1", // "93151", // SALEM SOUTHBOUND @ KINGSTON
-								"Sale Bayl2:1", "Sale Bayl2:1_merged_991952", // "3053", // SALEM SOUTHBOUND @ BAYLY
+								"Sale Bayl2:1", "Sale Bayl2:1_merged_992382", // "3053", // SALEM SOUTHBOUND @ BAYLY
 								"Ajax Go8:5", // "2569", // AJAX STATION
 						})) //
 				.compileBothTripSort());
@@ -592,11 +592,11 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						"Chur Temp1:1", // "1480", // CHURCH EASTBOUND @ TEMPERANCE
 								"Simp King:1", "Simp King:1_merged_922245", // "1498", // SIMPSON NORTHBOUND @ KING
 								"Mear Conc1:1", //
-								"Long Libe:1", "Long Libe:1_merged_992007", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
+								"Long Libe:1", "Long Libe:1_merged_992437", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Long Libe:1", "Long Libe:1_merged_992007", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
+						"Long Libe:1", "Long Libe:1_merged_992437", // "3173", // LONGWORTH WESTBOUND @ LIBERTY
 								"Chur Temp1:1", // "1480", // CHURCH EASTBOUND @ TEMPERANCE
 						})) //
 				.compileBothTripSort());
@@ -605,19 +605,19 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orono") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
 						Arrays.asList(new String[] { //
-						"Main Wint:1", "Main Wint:1_merged_991968", // "93533", // MAIN SOUTHBOUND @ WINTER
+						"Main Wint:1", "Main Wint:1_merged_992398", // "93533", // MAIN SOUTHBOUND @ WINTER
 								"Nort Grad:1", //
-								"Lake Wate:1", "Lake Wate:1_merged_991993", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
+								"Lake Wate:1", "Lake Wate:1_merged_992423", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
 								"Bowm Prin:1", // "1450", // BOWMANVILLE PARK AND RIDE
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
 						"Bowm Prin:1", // "1450", // BOWMANVILLE PARK AND RIDE
 								"Libe Vict:1", //
-								"Lake Wate:1", "Lake Wate:1_merged_991993", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
+								"Lake Wate:1", "Lake Wate:1_merged_992423", // "93478", // LAKEBREEZE EASTBOUND @ WATERVIEW
 								"Pete Taun:1", //
 								"Main Mill:1", //
-								"Main Wint:1", "Main Wint:1_merged_991968", // "93533", // MAIN SOUTHBOUND @ WINTER
+								"Main Wint:1", "Main Wint:1_merged_992398", // "93533", // MAIN SOUTHBOUND @ WINTER
 						})) //
 				.compileBothTripSort());
 		map2.put(601l, new RouteTripSpec(601l, //
@@ -631,20 +631,20 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"RR1 Rave1:1", // REGIONAL RD. 1 @ RAVENSHOE n ns
 								"Albe Rive:1", // "2530", // ALBERT NORTHBOUND @ RIVER
 								"RR23 Sara:1", // !=
-								"Hw12 RR15:1", "Hw12 RR15:1_merged_991895", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
-								"9Mil Lake:1", "9Mil Lake:1_merged_991926", // 9 MILE @ LAKEVIEW MANNOR n ns
+								"Hw12 RR15:1", "Hw12 RR15:1_merged_992325", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
+								"9Mil Lake:1", "9Mil Lake:1_merged_992356", // 9 MILE @ LAKEVIEW MANNOR n ns
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"9Mil Lake:1", "9Mil Lake:1_merged_991926", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
+						"9Mil Lake:1", "9Mil Lake:1_merged_992356", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
 								"Main Mill1:1", // !=
 								"RR23 Sara1:1", // !=
-								"Albe Jone1:1", "Albe Jone1:1_merged_991634", // "3193", // ALBERT @ JONES s fs
+								"Albe Jone1:1", "Albe Jone1:1_merged_992064", // "3193", // ALBERT @ JONES s fs
 								"RR1 Rave2:1", // REGIONAL RD. 1 @ RAVENSHOE s fs
 								"Firs Broc:1", // !=
 								"Broc Main2:1", // ==
-								"Toro Broc4:1", "Toro Broc4:1_merged_991866", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
-								"Toro Broc2:1", "Toro Broc2:1_merged_991885", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
+								"Toro Broc4:1", "Toro Broc4:1_merged_992296", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
+								"Toro Broc2:1", "Toro Broc2:1_merged_992315", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
 								"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
 						})) //
 				.compileBothTripSort());
@@ -674,7 +674,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
 						"Ange Kent21", // "3429", // ANGELINE SOUTHBOUND @ KENT
-								"Came Ann1:1", "Came Ann1:1_merged_991898", // "93549", // CAMERON @ ANN w ns {44
+								"Came Ann1:1", "Came Ann1:1_merged_992328", // "93549", // CAMERON @ ANN w ns {44
 						})) //
 				.compileBothTripSort());
 		map2.put(701l, new RouteTripSpec(701l, //
@@ -876,6 +876,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
 				return true;
 			}
+		} else if (mTrip.getRouteId() == 410L) {
+			if (Arrays.asList( //
+					"Olive & Ritson", //
+					"Oshawa Ctr Terminal" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 412l) {
 			if (Arrays.asList( //
 					"Oshawa Ctr Terminal", //
@@ -924,9 +932,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString("Bayly & Burcher", mTrip.getHeadsignId());
 				return true;
 			}
-		}
-		if (isGoodEnoughAccepted()) {
-			return super.mergeHeadsign(mTrip, mTripToMerge);
 		}
 		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
 		System.exit(-1);
