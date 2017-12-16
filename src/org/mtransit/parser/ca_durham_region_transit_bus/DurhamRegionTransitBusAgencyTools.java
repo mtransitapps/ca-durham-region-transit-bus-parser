@@ -823,11 +823,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		ALL_ROUTE_TRIPS2 = map2;
 	}
 
-	private static final Pattern MERGED = Pattern.compile("(\\_merged\\_.*$)", Pattern.CASE_INSENSITIVE);
-
 	@Override
 	public String cleanStopOriginalId(String gStopId) {
-		gStopId = MERGED.matcher(gStopId).replaceAll(StringUtils.EMPTY);
+		gStopId = CleanUtils.cleanMergedID(gStopId);
 		return gStopId;
 	}
 
