@@ -701,18 +701,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Welw Toro:1", // "2416", // WELWOOD EASTBOUND @ 6 WELWOOD
-								"Albe Rive:1", // "2530", // ALBERT NORTHBOUND @ RIVER
+								"Albe Jone1:1", // "3193", // Albert Southbound @ Jones
 								"Hw12 RR15:1", // "93528", // HIGHWAY 12 @ REGIONAL ROAD 15 n fsmb
 								"9Mil Lake:1", // 9 MILE @ LAKEVIEW MANNOR n ns
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"9Mil Lake:1", // "3190", // 9 MILE @ LAKEVIEW MANNOR n ns
-								"Albe Jone1:1", // "3193", // ALBERT @ JONES s fs
+								"Albe Rive:1", // "2530", // Albert Northbound @ River
 								"Broc Main2:1", // ==
 								"Toro Broc4:1", // "2422", // TORONTO NORTHBOUND @ BROCK ST => END
 								"Toro Broc2:1", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
-								"Toro Doug2:1", //
+								"Toro Doug2:1", // ++
 								"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
 						})) //
 				.compileBothTripSort());
@@ -999,7 +999,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 950l) {
 			if (Arrays.asList( //
-					"", //
+					StringUtils.EMPTY, //
 					"Toronto & Brock (Uxbridge)", //
 					"Uxbridge", //
 					"Welwood Dr (Uxbridge)" //
@@ -1118,6 +1118,10 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return 3430;
 		} else if (stopId.equalsIgnoreCase("Ross South11")) {
 			return 1000000017;
+		} else if (stopId.equalsIgnoreCase("Audl Dona21")) {
+			return 1000000018;
+		} else if (stopId.equalsIgnoreCase("Ross SouthW1")) {
+			return 1000000019;
 		}
 		System.out.printf("\nUnexptected stop ID for %s!\n", gStop);
 		System.exit(-1);
