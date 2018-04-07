@@ -499,20 +499,22 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Ajax Go8:5" // AJAX STATION
 						})) //
 				.compileBothTripSort());
-		map2.put(301l, new RouteTripSpec(301l, //
+		map2.put(301L, new RouteTripSpec(301L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Whitby Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Whit Go1:1", // Whitby Station
 								"Mcqu Dund:1", // ++
-								"Mcqu Bona:1", // McQuay Northbound @ Bonacord
+								"Mcqu Bona:1", // ++ McQuay Northbound @ Bonacord
+								"Coun Ross:1", // Country Lane Northbound @ Rossland
 								"Taun Coun3:1", //
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Taun Coun3:1", //
-								"Bona Coch:1", // Bonacord Westbound @ Cochrane
+								"Coch Ross1:1", // Cochrane Southbound @ Rossland
+								"Bona Coch:1", // ++ Bonacord Westbound @ Cochrane
 								"Whit Go1:1", // Whitby Station
 						})) //
 				.compileBothTripSort());
@@ -524,18 +526,19 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "Carn Down:1", "Bald Taun:1", "Whit Go1:1" })) //
 				.compileBothTripSort());
-		map2.put(303l, new RouteTripSpec(303l, //
+		map2.put(303L, new RouteTripSpec(303L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Whitby Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Whit Go1:1", // Whitby Station
 								"Gard Dund1:1", // ++
-								"Gard Taun1:1", // GARDEN NORTHBOUND @ TAUNTON
+								"Gard Taun1:1", // ++ GARDEN NORTHBOUND @ TAUNTON
+								"Mcki Broa2:1", // McKinney Southbound @ Broadleaf
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { //
-						"Gard Taun1:1", // GARDEN NORTHBOUND @ TAUNTON
+						"Mcki Broa2:1", // McKinney Southbound @ Broadleaf
 								"Gard Taun4:1", // ++
 								"Whit Go1:1", // Whitby Station
 						})) //
@@ -864,7 +867,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
 		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
-		if (mTrip.getRouteId() == 103l) {
+		if (mTrip.getRouteId() == 103L) {
 			if (Arrays.asList( //
 					"Rosebank", //
 					"Rouge Hl Sta" //
@@ -983,7 +986,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
 				return true;
 			}
-		} else if (mTrip.getRouteId() == 922l) {
+		} else if (mTrip.getRouteId() == 922L) {
 			if (Arrays.asList( //
 					"Oshawa Sta", //
 					"Whitby Sta" //
@@ -992,6 +995,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			} else if (Arrays.asList( //
 					"Harmony Terminal", //
+					"Uxbridge", //
 					"Oshawa Sta" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
@@ -1024,6 +1028,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final Pattern TO = Pattern.compile("((^|\\W){1}(to)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 	private static final Pattern VIA = Pattern.compile("((^|\\W){1}(via)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
 
+	private static final Pattern START_WITH_RSN = Pattern.compile("(^[\\d]+[A-Z]? \\- )", Pattern.CASE_INSENSITIVE);
+
 	@Override
 	public String cleanTripHeadsign(String tripHeadsign) {
 		Matcher matcherTO = TO.matcher(tripHeadsign);
@@ -1036,6 +1042,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			String gTripHeadsignBeforeVIA = tripHeadsign.substring(0, matcherVIA.start());
 			tripHeadsign = gTripHeadsignBeforeVIA;
 		}
+		tripHeadsign = START_WITH_RSN.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.CLEAN_AT.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
