@@ -995,6 +995,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			} else if (Arrays.asList( //
 					"Harmony Terminal", //
+					"Townline & Nash", //
 					"Uxbridge", //
 					"Oshawa Sta" //
 			).containsAll(headsignsValues)) {
