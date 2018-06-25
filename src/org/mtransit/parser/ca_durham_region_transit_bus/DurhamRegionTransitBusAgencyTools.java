@@ -414,6 +414,22 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Taun Sale1:1", // "2400", // Taunton Eastbound @ Salem
 						})) //
 				.compileBothTripSort());
+		map2.put(217L, new RouteTripSpec(217L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Dreyer & Pickering Beach", // Pickering Beach
+				1, MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Ajax Go8:5", // "2569", // Ajax Station
+								"Clem Mona:1", // ++
+								"Pick Drey2:1", // "2084", // Pickering Beach Southbound @ Dreyer
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Pick Beac:1", // "3174", // Pickering Beach Northbound @ Beachview
+								"Finl Chri:1", // ++
+								"Ajax Go8:5", // "2569", // Ajax Station
+						})) //
+				.compileBothTripSort());
 		map2.put(218L, new RouteTripSpec(218L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Harwood") //
@@ -822,6 +838,42 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Uoit Simc1:1", // "698", // UOIT / Durham College North Campus
 						})) //
 				.compileBothTripSort());
+		map2.put(402L, new RouteTripSpec(402L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Courtice Rd", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Ctr Terminal") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+								"King Warr:1", // ==
+								"King Nass:1", // !=
+								"King Midt:1", // ==
+								"Hwy2 Trul2:1", // ==
+								"Court Hwy21", // !=
+								"Cour Moys1:1", // == "93323", // Courtice Northbound @ Moyse
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Cour Moys:1", // "1217", // Courtice Southbound @ Moyse (Courtice Community Complex)
+								"Bond Clay1:1", // ++
+								"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+						})) //
+				.compileBothTripSort());
+		map2.put(403L, new RouteTripSpec(403L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Sta", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Ctr Terminal") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+								"Stev Phil2:1", // "940", // Stevenson Northbound @ Phillip Murray
+								"Osha Go1:14", // "2585", // Oshawa Station
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Osha Go1:14", // "2585", // Oshawa Station
+								"Stev Phil1:1", // "939", // Stevenson Southbound @ Phillip Murray
+								"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+						})) //
+				.compileBothTripSort());
 		map2.put(405L, new RouteTripSpec(405L, //
 				0, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Sta", //
 				1, MTrip.HEADSIGN_TYPE_STRING, "Harmony Terminal") //
@@ -841,6 +893,61 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Elmg West2:1", // !=
 								"Wils Bond:1", // "3120", // Wilson Northbound @ Bond {43.903539,-78.844486}
 								"Harm Term:1", // "812", // Harmony Terminal
+						})) //
+				.compileBothTripSort());
+		map2.put(407L, new RouteTripSpec(407L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Harmony Terminal", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "Colonel Sam") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Colo Fare2:1", // "90014", // Eastbound @ 1908 Colonel Sam
+								"Fare Rale1:1", // "3114", // Farewell Northbound @ Raleigh
+								"Rits Ormo2:1", // ==
+								"Rits Lupl21", // !=
+								"Rits Cold3:1", // ==
+								"Harm Term:1", // "812", // Harmony Terminal
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Harm Term:1", // "812", // Harmony Terminal
+								"Rits Taun1:1", // "861", // Ritson Southbound @ Taunton
+								"Bond Rits:1", // "1163", // Bond Westbound @ Ritson
+								"Fare Rale:1", // "1119", // Farewell Southbound @ Raleigh
+								"Colo Fare2:1", // "90014", // Eastbound @ 1908 Colonel Sam
+						})) //
+				.compileBothTripSort());
+		map2.put(408L, new RouteTripSpec(408L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Ctr Terminal", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "Taunton") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Taun Thic2:1", // "383", // Taunton Eastbound @ Thickson
+								"Gibb Stev2:1", // ==
+								"Gibb Stev3:1", // !=
+								"Oc   Elmg3:1", // == "2595", // Oshawa Centre Terminal
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+								"Garr Fore:1", // ++
+								"Taun Thic2:1", // "383", // Taunton Eastbound @ Thickson
+						})) //
+				.compileBothTripSort());
+		map2.put(409L, new RouteTripSpec(409L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Taunton", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "Oshawa Ctr Terminal") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
+								"Garr Fore:1", // ++
+								"Taun Thic2:1", // "383", // Taunton Eastbound @ Thickson
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Taun Thic2:1", // "383", // Taunton Eastbound @ Thickson
+								"Stev Cart:1", // ==
+								"Gibb Stev3:1", // !=
+								"Oc   Elmg3:1", // == "2595", // Oshawa Centre Terminal
 						})) //
 				.compileBothTripSort());
 		map2.put(411L, new RouteTripSpec(411L, //
@@ -875,7 +982,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Oc   Elmg3:1", // "2595", // Oshawa Centre Terminal
 						})) //
 				.compileBothTripSort());
-		map2.put(414l, new RouteTripSpec(414l, //
+		map2.put(414L, new RouteTripSpec(414L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Nonquon", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Oshawa Ctr Terminal") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
@@ -893,7 +1000,30 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Dean Norm1:1", // Dean Eastbound @ Normandy
 						})) //
 				.compileBothTripSort());
-		map2.put(501l, new RouteTripSpec(501l, //
+		map2.put(420L, new RouteTripSpec(420L, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Britannia Ave & Kentucky Derby", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "UOIT / DC North Campus") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Uoit Simc1:1", // "698", // UOIT / Durham College North Campus
+								"Simc Conl:1", // ==
+								"Simc Nort:1", // !=
+								"Conl Walr1:1", // !=
+								"Brit Simc1", // !=
+								"Brit Thor1", // ==
+								"Brit Kent1", // "3366", // Britannia Westbound @ Kentucky Derby
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Brit Kent1", // "3366", // Britannia Westbound @ Kentucky Derby
+								"BBrit Thor21", // ==
+								"Brit Simc21", // !=
+								"Simc Conl21", // !=
+								"Simc Foun:1", // ==
+								"Uoit Simc1:1", // "698", // UOIT / Durham College North Campus
+						})) //
+				.compileBothTripSort());
+		map2.put(501L, new RouteTripSpec(501L, //
 				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Liberty", //
 				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Bowmanville P&R") //
 				.addTripSort(MDirectionType.EAST.intValue(), //
@@ -941,7 +1071,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Main Wint:1", // "93533", // MAIN SOUTHBOUND @ WINTER
 						})) //
 				.compileBothTripSort());
-		map2.put(601l, new RouteTripSpec(601l, //
+		map2.put(601L, new RouteTripSpec(601L, //
 				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Beaverton", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Uxbridge") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
@@ -960,6 +1090,31 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Toro Broc2:1", // != "2438", // TORONTO SOUTHBOUND @ BROCK ST
 								"Toro Doug2:1", // ++
 								"Welw Toro:1", // WELWOOD EASTBOUND @ 6 WELWOOD
+						})) //
+				.compileBothTripSort());
+		map2.put(603L, new RouteTripSpec(603L, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Uxbridge", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Pickering Pkwy Terminal") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Pick Term1:1", // "93112", // Pickering Parkway Terminal
+								"Broc B4071", // ==
+								"Broc Hwy721", // !=
+								"Hwy7 Mowb21", // !=
+								"Mowb Brou1", // !=
+								"OldB Broc1", // ==
+								"Welw Toro:1", // "2416", // Eastbound @ 6 Welwood
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Toro Broc1:1", // "2424", // Toronto Southbound @ Brock Street
+								"Welw Toro:1", // "2416", // Eastbound @ 6 Welwood
+								"OldB Broc21", // ==
+								"Mowb Brou21", // !=
+								"Hwy7 Mowb1", // !=
+								"Broc Hwy71", // !=
+								"Broc Hw4021", // ==
+								"Pick Term1:1", // "93112", // Pickering Parkway Terminal
 						})) //
 				.compileBothTripSort());
 		map2.put(653l, new RouteTripSpec(653l, //
@@ -1055,7 +1210,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						})) //
 				.compileBothTripSort());
 		map2.put(910l, new RouteTripSpec(910l, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Durham College UOIT", //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "UOIT / DC North Campus", //
 				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Whitby Sta") //
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
@@ -1069,6 +1224,52 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Thor Ross2:1", //
 								"Oc   Elmg3:1", //
 								"Whit Go1:1", //
+						})) //
+				.compileBothTripSort());
+		map2.put(915L, new RouteTripSpec(915L, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "UOIT / DC North Campus", // Harmony Terminal
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Ajax Sta") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Ajax Go8:5", // "2569", // Ajax Station
+								"Taun Sale1:1", // "2400", // Taunton Eastbound @ Salem
+								"Taun Some2:1", // == !=
+								"Simc Taun2:1", // != <>
+								"Uoit Simc1:1", // != <>"698", // UOIT / Durham College North Campus
+								"Simc Cayu2:1", // != <>
+								"Taunt Simc21",// == !=
+								"Harm Term:1", // "812", // Harmony Terminal
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Harm Term:1", // "812", // Harmony Terminal
+								"Taunt Mary1", // == !=
+								"Simc Taun2:1", // != <>
+								"Uoit Simc1:1", // != <> "698", // UOIT / Durham College North Campus
+								"Simc Cayu2:1", // != <>
+								"Taunt Simc1", // == !=
+								"Simc Taun3:1", // != !=
+								"Taun Some1:1", // ==
+								"Taun Vall1:1", // "370", // Taunton Westbound @ Valleywood
+								"Ajax Go8:5", // "2569", // Ajax Station
+						})) //
+				.compileBothTripSort());
+		map2.put(922L, new RouteTripSpec(922L, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Whitby Sta", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Harmony Terminal") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Harm Term:1", // "812", // Harmony Terminal
+								"Nash Town:1", // "1201", // Nash Eastbound @ Townline
+								"Osha Go1:14", // "2585", // Oshawa Station
+								"Whit Go1:1", // "2576", // Whitby Station
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"Whit Go1:1", // "2576", // Whitby Station
+								"Osha Go1:14", // "2585", // Oshawa Station
+								"Town Nash2:1", // "786", // Townline Northbound @ Nash
+								"Harm Term:1", // "812", // Harmony Terminal
 						})) //
 				.compileBothTripSort());
 		map2.put(930l, new RouteTripSpec(930l, //
@@ -1086,6 +1287,28 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { "Deer Cree1", "9Mil Lake:1" })) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
 						Arrays.asList(new String[] { "9Mil Lake:1", "Deer Cree1" })) //
+				.compileBothTripSort());
+		map2.put(950L, new RouteTripSpec(950L, //
+				0, MTrip.HEADSIGN_TYPE_STRING, "Uxbridge", //
+				1, MTrip.HEADSIGN_TYPE_STRING, "UOIT / DC North Campus") //
+				.addTripSort(0, //
+						Arrays.asList(new String[] { //
+						"Uoit Simc1:1", // "698", // UOIT / Durham College North Campus
+								"Scug High:1", // !=
+								"Curt Wate2:1", // <> "2491", // Curts Eastbound @ Port Perry Terminal
+								"Wate Curt:1", // !=
+								"Toro Broc1:1", // "2424", // Toronto Southbound @ Brock Street
+								"Welw Toro:1", // "2416", // Eastbound @ 6 Welwood
+						})) //
+				.addTripSort(1, //
+						Arrays.asList(new String[] { //
+						"Welw Toro:1", // "2416", // Eastbound @ 6 Welwood
+								"Toro Broc4:1", // "2422", // Toronto Northbound @ Brock
+								"Quee Wate:1", // !=
+								"Curt Wate2:1", // <> "2491", // Curts Eastbound @ Port Perry Terminal
+								"Scug Simc1:1", // !=
+								"Uoit Simc1:1", // "698", // UOIT / Durham College North Campus
+						})) //
 				.compileBothTripSort());
 		ALL_ROUTE_TRIPS2 = map2;
 	}
@@ -1325,14 +1548,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 					"Harmony Terminal" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 408l) {
-			if (Arrays.asList( //
-					"Taunton", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 410L) {
