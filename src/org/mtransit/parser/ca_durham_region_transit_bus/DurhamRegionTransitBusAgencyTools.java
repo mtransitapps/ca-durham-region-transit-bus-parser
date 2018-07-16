@@ -65,6 +65,11 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
+	public boolean excludingAll() {
+		return this.serviceIds != null && this.serviceIds.isEmpty();
+	}
+
+	@Override
 	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
 		if (this.serviceIds != null) {
 			return excludeUselessCalendarDate(gCalendarDates, this.serviceIds);
