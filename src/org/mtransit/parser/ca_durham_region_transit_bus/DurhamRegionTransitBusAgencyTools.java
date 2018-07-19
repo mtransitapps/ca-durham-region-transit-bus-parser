@@ -1241,6 +1241,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Taun Some2:1", // == !=
 								"Simc Taun2:1", // != <>
 								"Uoit Simc1:1", // != <>"698", // UOIT / Durham College North Campus
+								"Comm Simc1:1", // != <>
 								"Simc Cayu2:1", // != <>
 								"Taunt Simc21",// == !=
 								"Harm Term:1", // "812", // Harmony Terminal
@@ -1251,9 +1252,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 								"Taunt Mary1", // == !=
 								"Simc Taun2:1", // != <>
 								"Uoit Simc1:1", // != <> "698", // UOIT / Durham College North Campus
+								"Comm Simc1:1", // != <>
 								"Simc Cayu2:1", // != <>
 								"Taunt Simc1", // == !=
-								"Simc Taun3:1", // != !=
 								"Taun Some1:1", // ==
 								"Taun Vall1:1", // "370", // Taunton Westbound @ Valleywood
 								"Ajax Go8:5", // "2569", // Ajax Station
