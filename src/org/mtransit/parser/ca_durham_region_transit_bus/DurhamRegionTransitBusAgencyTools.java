@@ -418,8 +418,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				.addTripSort(MDirectionType.NORTH.intValue(), //
 						Arrays.asList(new String[] { //
 						"Whit Go1:1", // Whitby Station
-								"Gard Dund1:1", // ++
+								"Gard Dund2:1", // ++
 								"Gard Taun1:1", // ++ GARDEN NORTHBOUND @ TAUNTON
+								"Gard Taun3:1", // Garden Northbound @ Taunton (North side stop)
 								"Mcki Broa2:1", // McKinney Southbound @ Broadleaf
 						})) //
 				.addTripSort(MDirectionType.SOUTH.intValue(), //
