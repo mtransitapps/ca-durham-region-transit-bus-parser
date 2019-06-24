@@ -29,8 +29,8 @@ import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
 
-// http://www.durham.ca/corpservices.asp?nr=/departments/corpservices/it/gis/opendatalicense.htm&setFooter=/includes/GISfooter.inc
 // http://opendata.durham.ca/
+// https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
 // http://opendata.durham.ca/datasets?t=Durham%20Transportation
 // https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
 public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
@@ -249,6 +249,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			case 603: return "F14623";
 			case 653: return "8D188F";
 			case 654: return "293D9B";
+			case 750: return null; // TODO
+			case 752: return null; // TODO
 			case 801: return "4EA3DD";
 			case 900: return "DE581E";
 			case 910: return "75AC95";
