@@ -62,6 +62,65 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private void setupNext() {
 		ALL_ROUTE_TRIPS2.clear();
+		ALL_ROUTE_TRIPS2.put(501L, new RouteTripSpec(501L, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance", //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Highway 2") //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { //
+						"1436:1", // "1436", // Highway 2 Westbound @ Boswell
+								"1480:1", // "1480", // Church Eastbound @ Temperance
+						})) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { //
+						"1480:1", // "1480", // Church Eastbound @ Temperance
+								"1436:1", // "1436", // Highway 2 Westbound @ Boswell
+						})) //
+				.compileBothTripSort());
+		ALL_ROUTE_TRIPS2.put(502L, new RouteTripSpec(502L, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Longworth & Liberty", //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance") //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { //
+						"1480:1", // "1480", // Church Eastbound @ Temperance
+								"1498:1", // "1498", // Simpson Northbound @ King
+								"3173:1", // "3173", // Longworth Westbound @ Liberty
+						})) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { //
+						"3173:1", // "3173", // Longworth Westbound @ Liberty
+								"1480:1", // "1480", // Church Eastbound @ Temperance
+						})) //
+				.compileBothTripSort());
+		ALL_ROUTE_TRIPS2.put(653L, new RouteTripSpec(653L, //
+				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orillia", //
+				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
+				.addTripSort(MDirectionType.NORTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
+								"3426:1", // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
+						})) //
+				.addTripSort(MDirectionType.SOUTH.intValue(), //
+						Arrays.asList(new String[] { //
+						"3426:1", // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
+								"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
+						})) //
+				.compileBothTripSort());
+		ALL_ROUTE_TRIPS2.put(654L, new RouteTripSpec(654L, //
+				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lindsay", //
+				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
+				.addTripSort(MDirectionType.EAST.intValue(), //
+						Arrays.asList(new String[] { //
+						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
+								"3428:1", // "3428", // Angeline Northbound @ Kent (Ross Memorial Hospital)
+								"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
+						})) //
+				.addTripSort(MDirectionType.WEST.intValue(), //
+						Arrays.asList(new String[] { //
+						"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
+								"3429:1", // "3429", // Angeline Southbound @ Kent (Ross Memorial Hospital)
+								"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
+						})) //
+				.compileBothTripSort());
 	}
 
 	@Override
@@ -446,6 +505,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final String B__ = "B - ";
 	private static final String C__ = "C - ";
 	private static final String D__ = "D - ";
+	private static final String F__ = "F - ";
+	private static final String G__ = "G - ";
+	private static final String H__ = "H - ";
 	private static final String S__ = "S - ";
 
 	@Override
@@ -461,18 +523,28 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			}
 		} else if (mTrip.getRouteId() == 103L) {
 			if (Arrays.asList( //
-					B__ + "Rosebank", //
+					B__ + "Rosebank", // <>
 					C__ + "Rosebank", //
 					"Rosebank", //
 					"Rouge Hl Sta" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Rouge Hl Sta", mTrip.getHeadsignId());
 				return true;
-			} else if (Arrays.asList( //
+			}
+			if (Arrays.asList( //
+					B__ + "Rosebank", // <>
 					C__ + "Pickering Sta", //
 					"Pickering Pkwy Terminal" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 107L) {
+			if (Arrays.asList( //
+					"Rougemount", //
+					"Pickering Sta" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Pickering Sta", mTrip.getHeadsignId());
 				return true;
 			}
 		} else if (mTrip.getRouteId() == 110L + RID_ENDS_WITH_A) { // 110A
@@ -611,6 +683,13 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignString("Kerrison", mTrip.getHeadsignId());
 				return true;
 			}
+			if (Arrays.asList( //
+					S__ + "Bayly & Salem", //
+					"Ajax Sta" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Ajax Sta", mTrip.getHeadsignId());
+				return true;
+			}
 		} else if (mTrip.getRouteId() == 225L) {
 			if (Arrays.asList( //
 					S__ + "Rushworth", //
@@ -662,6 +741,22 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 302L) {
 			if (Arrays.asList( //
 					S__ + "Taunton", //
+					"Whitby Sta" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 304L) {
+			if (Arrays.asList( //
+					B__ + "Lazio & Samandria", //
+					"Ontario Tech / DC North Campus" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Ontario Tech / DC North Campus", mTrip.getHeadsignId());
+				return true;
+			}
+		} else if (mTrip.getRouteId() == 305L) {
+			if (Arrays.asList( //
+					S__ + "Dryden & Thickson", //
 					"Whitby Sta" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
@@ -834,12 +929,21 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		} else if (mTrip.getRouteId() == 601L) {
 			if (Arrays.asList( //
 					"Uxbridge", // <>
-					B__ + "Sunderland", //
-					"Beaverton" //
+					"Beaverton" // <>
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Beaverton", mTrip.getHeadsignId());
 				return true;
-			} else if (Arrays.asList( //
+			}
+			if (Arrays.asList( //
+					"Uxbridge", // <>
+					B__ + "Sunderland", //
+					"Beaverton" // <>
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Beaverton", mTrip.getHeadsignId());
+				return true;
+			}
+			if (Arrays.asList( //
+					"Beaverton", // <>
 					B__ + "Uxbridge", //
 					"Uxbridge" // <>
 			).containsAll(headsignsValues)) {
@@ -867,6 +971,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 					"Salem", //
 					C__ + "Harmony Terminal", //
 					"Harmony Terminal", //
+					B__ + "Ontario Tech / DC North Campus", //
 					B__ + "UOIT / DC North Campus", //
 					"UOIT / DC North Campus" //
 			).containsAll(headsignsValues)) {
@@ -918,17 +1023,31 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			if (Arrays.asList( //
 					StringUtils.EMPTY, //
 					S__ + "Port Perry", //
+					B__ + "Port Perry", //
 					"Toronto & Brock (Uxbridge)", //
 					S__ + "Uxbridge (Toronto & Brock)", //
+					D__ + "Uxbridge (Toronto & Brock)", //
 					"Welwood Dr (Uxbridge)", //
+					F__ + "Uxbridge (Welwood)", //
 					C__ + "Uxbridge (Welwood)", //
 					D__ + "Uxbridge (Welwood)", //
 					B__ + "Uxbridge", //
+					C__ + "Uxbridge", //
+					G__ + "Uxbridge", //
 					"Uxbridge" //
 			).containsAll(headsignsValues)) {
 				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
 				return true;
-			} else if (Arrays.asList( //
+			}
+			if (Arrays.asList( //
+					H__ + "Ontario Tech / DC North Campus", //
+					F__ + "Ontario Tech / DC North Campus", //
+					"Ontario Tech / DC North Campus" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Ontario Tech / DC North Campus", mTrip.getHeadsignId());
+				return true;
+			}
+			if (Arrays.asList( //
 					C__ + "UOIT / DC North Campus", //
 					"UOIT / DC North Campus" //
 			).containsAll(headsignsValues)) {
