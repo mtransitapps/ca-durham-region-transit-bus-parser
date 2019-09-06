@@ -61,66 +61,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	private void setupNext() {
-		ALL_ROUTE_TRIPS2.clear();
-		ALL_ROUTE_TRIPS2.put(501L, new RouteTripSpec(501L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Highway 2") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { //
-						"1436:1", // "1436", // Highway 2 Westbound @ Boswell
-								"1480:1", // "1480", // Church Eastbound @ Temperance
-						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { //
-						"1480:1", // "1480", // Church Eastbound @ Temperance
-								"1436:1", // "1436", // Highway 2 Westbound @ Boswell
-						})) //
-				.compileBothTripSort());
-		ALL_ROUTE_TRIPS2.put(502L, new RouteTripSpec(502L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Longworth & Liberty", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { //
-						"1480:1", // "1480", // Church Eastbound @ Temperance
-								"1498:1", // "1498", // Simpson Northbound @ King
-								"3173:1", // "3173", // Longworth Westbound @ Liberty
-						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { //
-						"3173:1", // "3173", // Longworth Westbound @ Liberty
-								"1480:1", // "1480", // Church Eastbound @ Temperance
-						})) //
-				.compileBothTripSort());
-		ALL_ROUTE_TRIPS2.put(653L, new RouteTripSpec(653L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orillia", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList(new String[] { //
-						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-								"3426:1", // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
-						})) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList(new String[] { //
-						"3426:1", // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
-								"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-						})) //
-				.compileBothTripSort());
-		ALL_ROUTE_TRIPS2.put(654L, new RouteTripSpec(654L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lindsay", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList(new String[] { //
-						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-								"3428:1", // "3428", // Angeline Northbound @ Kent (Ross Memorial Hospital)
-								"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
-						})) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList(new String[] { //
-						"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
-								"3429:1", // "3429", // Angeline Southbound @ Kent (Ross Memorial Hospital)
-								"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-						})) //
-				.compileBothTripSort());
 	}
 
 	@Override
@@ -453,10 +393,12 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 						Arrays.asList(new String[] { //
 						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
 								"3428:1", // "3428", // Angeline Northbound @ Kent (Ross Memorial Hospital)
+								"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
 						})) //
 				.addTripSort(MDirectionType.WEST.intValue(), //
 						Arrays.asList(new String[] { //
-						"3429:1", // "3429", // Angeline Southbound @ Kent (Ross Memorial Hospital)
+						"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
+								"3429:1", // "3429", // Angeline Southbound @ Kent (Ross Memorial Hospital)
 								"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
 						})) //
 				.compileBothTripSort());
