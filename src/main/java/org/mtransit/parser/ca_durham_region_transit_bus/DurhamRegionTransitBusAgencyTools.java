@@ -1,21 +1,11 @@
 package org.mtransit.parser.ca_durham_region_transit_bus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
-import org.mtransit.parser.Pair;
-import org.mtransit.parser.SplitUtils;
-import org.mtransit.parser.SplitUtils.RouteTripSpec;
+import org.mtransit.parser.StringUtils;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
@@ -23,12 +13,17 @@ import org.mtransit.parser.gtfs.data.GRoute;
 import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
-import org.mtransit.parser.gtfs.data.GTripStop;
 import org.mtransit.parser.mt.data.MAgency;
-import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
-import org.mtransit.parser.mt.data.MTripStop;
+
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.mtransit.parser.Constants.EMPTY;
+import static org.mtransit.parser.Constants.SPACE_;
 
 // http://opendata.durham.ca/
 // https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
@@ -36,7 +31,7 @@ import org.mtransit.parser.mt.data.MTripStop;
 // https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
 public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
-	public static void main(String[] args) {
+	public static void main(@Nullable String[] args) {
 		if (args == null || args.length == 0) {
 			args = new String[3];
 			args[0] = "input/gtfs.zip";
@@ -46,54 +41,48 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		new DurhamRegionTransitBusAgencyTools().start(args);
 	}
 
-	private HashSet<String> serviceIds;
+	@Nullable
+	private HashSet<Integer> serviceIdInts;
 
 	@Override
-	public void start(String[] args) {
+	public void start(@NotNull String[] args) {
 		MTLog.log("Generating DRT bus data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this, true);
-		boolean isNext = "next_".equalsIgnoreCase(args[2]);
-		if (isNext) {
-			setupNext();
-		}
+		this.serviceIdInts = extractUsefulServiceIdInts(args, this, true);
 		super.start(args);
 		MTLog.log("Generating DRT bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
-	private void setupNext() {
-		// DO NOTHING
-	}
-
 	@Override
-	public boolean excludeCalendar(GCalendar gCalendar) {
-		if (this.serviceIds != null) {
-			return excludeUselessCalendar(gCalendar, this.serviceIds);
+	public boolean excludeCalendar(@NotNull GCalendar gCalendar) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessCalendarInt(gCalendar, this.serviceIdInts);
 		}
 		return super.excludeCalendar(gCalendar);
 	}
 
 	@Override
 	public boolean excludingAll() {
-		return this.serviceIds != null && this.serviceIds.isEmpty();
+		return this.serviceIdInts != null && this.serviceIdInts.isEmpty();
 	}
 
 	@Override
-	public boolean excludeCalendarDate(GCalendarDate gCalendarDates) {
-		if (this.serviceIds != null) {
-			return excludeUselessCalendarDate(gCalendarDates, this.serviceIds);
+	public boolean excludeCalendarDate(@NotNull GCalendarDate gCalendarDates) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessCalendarDateInt(gCalendarDates, this.serviceIdInts);
 		}
 		return super.excludeCalendarDate(gCalendarDates);
 	}
 
 	@Override
-	public boolean excludeTrip(GTrip gTrip) {
-		if (this.serviceIds != null) {
-			return excludeUselessTrip(gTrip, this.serviceIds);
+	public boolean excludeTrip(@NotNull GTrip gTrip) {
+		if (this.serviceIdInts != null) {
+			return excludeUselessTripInt(gTrip, this.serviceIdInts);
 		}
 		return super.excludeTrip(gTrip);
 	}
 
+	@NotNull
 	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
@@ -111,7 +100,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final long RID_ENDS_WITH_S = 190_000L;
 
 	@Override
-	public long getRouteId(GRoute gRoute) {
+	public long getRouteId(@NotNull GRoute gRoute) {
 		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
 			return Long.parseLong(gRoute.getRouteShortName());
 		}
@@ -135,13 +124,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			} else if (rsnLC.endsWith("s")) {
 				return digits + RID_ENDS_WITH_S;
 			}
-			throw new MTLog.Fatal("Unexptected route ID for %s!", gRoute);
+			throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute);
 		}
 		return super.getRouteId(gRoute);
 	}
 
+	@NotNull
 	@Override
-	public String getRouteLongName(GRoute gRoute) {
+	public String getRouteLongName(@NotNull GRoute gRoute) {
 		if (StringUtils.isEmpty(gRoute.getRouteLongName())) {
 			if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Industrial Bay Ridges";
@@ -162,7 +152,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
 				return "Campus Connect";
 			}
-			throw new MTLog.Fatal("Unexptected route long name for %s!", gRoute);
+			throw new MTLog.Fatal("Unexpected route long name for %s!", gRoute);
 		}
 		return super.getRouteLongName(gRoute);
 	}
@@ -171,13 +161,15 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String AGENCY_COLOR = AGENCY_COLOR_GREEN;
 
+	@NotNull
 	@Override
 	public String getAgencyColor() {
 		return AGENCY_COLOR;
 	}
 
+	@Nullable
 	@Override
-	public String getRouteColor(GRoute gRoute) {
+	public String getRouteColor(@NotNull GRoute gRoute) {
 		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
 			int rsn = Integer.parseInt(gRoute.getRouteShortName());
 			switch (rsn) {
@@ -256,6 +248,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			case 923: return "65A930";
 			case 950: return "87CF25";
 			case 960: return "B2D235";
+			case 980: return null; // TODO
 			// @formatter:on
 			}
 		}
@@ -335,759 +328,49 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		throw new MTLog.Fatal("Unexpected route color %s!", gRoute.toStringPlus());
 	}
 
-	private static final HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
-	static {
-		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
-		map2.put(501L, new RouteTripSpec(501L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Highway 2") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList( //
-						"1436:1", // "1436", // Highway 2 Westbound @ Boswell
-								"1480:1" // "1480", // Church Eastbound @ Temperance
-						)) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList( //
-						"1480:1", // "1480", // Church Eastbound @ Temperance
-								"1436:1" // "1436", // Highway 2 Westbound @ Boswell
-						)) //
-				.compileBothTripSort());
-		map2.put(502L, new RouteTripSpec(502L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Longworth & Liberty", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Church & Temperance") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList( //
-						"1480:1", // "1480", // Church Eastbound @ Temperance
-								"1498:1", // "1498", // Simpson Northbound @ King
-								"3173:1" // "3173", // Longworth Westbound @ Liberty
-						)) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList( //
-						"3173:1", // "3173", // Longworth Westbound @ Liberty
-								"1480:1" // "1480", // Church Eastbound @ Temperance
-						)) //
-				.compileBothTripSort());
-		map2.put(653L, new RouteTripSpec(653L, //
-				MDirectionType.NORTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Orillia", //
-				MDirectionType.SOUTH.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
-				.addTripSort(MDirectionType.NORTH.intValue(), //
-						Arrays.asList( //
-						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-								"3426:1" // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
-						)) //
-				.addTripSort(MDirectionType.SOUTH.intValue(), //
-						Arrays.asList( //
-						"3426:1", // "3426", // Dunlop Southbound @ Colborne (Soldiers Memorial Hospital)
-								"2491:1" // "2491", // Curts Eastbound @ Port Perry Terminal
-						)) //
-				.compileBothTripSort());
-		map2.put(654L, new RouteTripSpec(654L, //
-				MDirectionType.EAST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Lindsay", //
-				MDirectionType.WEST.intValue(), MTrip.HEADSIGN_TYPE_STRING, "Port Perry") //
-				.addTripSort(MDirectionType.EAST.intValue(), //
-						Arrays.asList( //
-						"2491:1", // "2491", // Curts Eastbound @ Port Perry Terminal
-								"3428:1", // "3428", // Angeline Northbound @ Kent (Ross Memorial Hospital)
-								"36341" // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
-						)) //
-				.addTripSort(MDirectionType.WEST.intValue(), //
-						Arrays.asList( //
-						"36341", // "3634", // Albert Eastbound @ Auk Trail (Lindsay Recreation Complex)
-								"3429:1", // "3429", // Angeline Southbound @ Kent (Ross Memorial Hospital)
-								"2491:1" // "2491", // Curts Eastbound @ Port Perry Terminal
-						)) //
-				.compileBothTripSort());
-		ALL_ROUTE_TRIPS2 = map2;
-	}
-
+	@NotNull
 	@Override
-	public String cleanStopOriginalId(String gStopId) {
+	public String cleanStopOriginalId(@NotNull String gStopId) {
 		gStopId = CleanUtils.cleanMergedID(gStopId);
 		return gStopId;
 	}
 
 	@Override
-	public int compareEarly(long routeId, List<MTripStop> list1, List<MTripStop> list2, MTripStop ts1, MTripStop ts2, GStop ts1GStop, GStop ts2GStop) {
-		if (ALL_ROUTE_TRIPS2.containsKey(routeId)) {
-			return ALL_ROUTE_TRIPS2.get(routeId).compare(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop, this);
-		}
-		return super.compareEarly(routeId, list1, list2, ts1, ts2, ts1GStop, ts2GStop);
+	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
+		mTrip.setHeadsignString(
+				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()),
+				gTrip.getDirectionIdOrDefault()
+		);
 	}
 
 	@Override
-	public ArrayList<MTrip> splitTrip(MRoute mRoute, GTrip gTrip, GSpec gtfs) {
-		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
-			return ALL_ROUTE_TRIPS2.get(mRoute.getId()).getAllTrips();
-		}
-		return super.splitTrip(mRoute, gTrip, gtfs);
+	public boolean directionFinderEnabled() {
+		return true;
 	}
 
 	@Override
-	public Pair<Long[], Integer[]> splitTripStop(MRoute mRoute, GTrip gTrip, GTripStop gTripStop, ArrayList<MTrip> splitTrips, GSpec routeGTFS) {
-		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
-			return SplitUtils.splitTripStop(mRoute, gTrip, gTripStop, routeGTFS, ALL_ROUTE_TRIPS2.get(mRoute.getId()), this);
-		}
-		return super.splitTripStop(mRoute, gTrip, gTripStop, splitTrips, routeGTFS);
-	}
-
-	@Override
-	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
-			return; // split
-		}
-		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
-	}
-
-	private static final String A__ = "A - ";
-	private static final String B__ = "B - ";
-	private static final String C__ = "C - ";
-	private static final String D__ = "D - ";
-	private static final String F__ = "F - ";
-	private static final String G__ = "G - ";
-	private static final String H__ = "H - ";
-	private static final String S__ = "S - ";
-
-	@Override
-	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
-		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
-		if (mTrip.getRouteId() == 101L + RID_ENDS_WITH_A) { // 101A
-			if (Arrays.asList( //
-					A__ + "Pickering Sta", //
-					"Pickering Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 103L) {
-			if (Arrays.asList( //
-					B__ + "Rosebank", // <>
-					C__ + "Rosebank", //
-					"Rosebank", //
-					"Rouge Hl Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Rouge Hl Sta", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					B__ + "Rosebank", // <>
-					C__ + "Pickering Sta", //
-					"Pickering Pkwy Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 107L) {
-			if (Arrays.asList( //
-					"Rougemount", //
-					"Pickering Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 110L + RID_ENDS_WITH_A) { // 110A
-			if (Arrays.asList( //
-					A__ + "Pickering Pkwy Terminal", //
-					"Pickering Pkwy Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 110L + RID_ENDS_WITH_B) { // 110B
-			if (Arrays.asList( //
-					B__ + "Pickering Pkwy Terminal", //
-					"Pickering Pkwy Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					B__ + "Kingston & Whites", //
-					"Kingston & Whites" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Kingston & Whites", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 111L + RID_ENDS_WITH_A) { // 111A
-			if (Arrays.asList( //
-					A__ + "Pickering Pkwy Terminal", //
-					"Pickering Pkwy Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 112L) {
-			if (Arrays.asList( //
-					"Zents", // <>
-					"Pickering Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 181L) {
-			if (Arrays.asList( //
-					"Pickering", //
-					"West Pickering" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 193L + RID_ENDS_WITH_A) { // 193A
-			if (Arrays.asList( //
-					A__ + "Pickering Town Ctr", //
-					"Pickering Town Ctr" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Town Ctr", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 193L + RID_ENDS_WITH_B) { // 193B
-			if (Arrays.asList( //
-					B__ + "Pickering Town Ctr", //
-					"Pickering Town Ctr" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Town Ctr", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 215L) {
-			if (Arrays.asList( //
-					"Kingston Rd", //
-					"Taunton" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 216L) {
-			if (Arrays.asList( //
-					S__ + "Harwood & Taunton", //
-					"Harwood & Taunton", //
-					"Taunton" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 219L) {
-			if (Arrays.asList( //
-					C__ + "Williamson", //
-					A__ + "Taunton", //
-					"Taunton" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 223L) {
-			if (Arrays.asList( //
-					B__ + "Ajax Sta", //
-					C__ + "Shoal Pt", //
-					"Ajax Sta", //
-					"Dreyer" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Dreyer", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					S__ + "Ajax Sta", //
-					C__ + "Ajax Sta", //
-					"Glenanna" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Glenanna", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 223L + RID_ENDS_WITH_C) { // 223C
-			if (Arrays.asList( //
-					C__ + "Shoal Pt", //
-					"Shoal Pt" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Shoal Pt", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					C__ + "Ajax Sta", //
-					"Ajax Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ajax Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 224L) {
-			if (Arrays.asList( //
-					A__ + "Taunton", //
-					B__ + "Kerrison", //
-					S__ + "Kerrison", //
-					S__ + "Kingston Rd & Salem", //
-					"Taunton" // ++
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					B__ + "Salem & Bayly", //
-					"Kerrison" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Kerrison", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					S__ + "Bayly & Salem", //
-					"Ajax Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ajax Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 225L) {
-			if (Arrays.asList( //
-					S__ + "Rushworth", //
-					"Taunton" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Taunton", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 226L + RID_ENDS_WITH_S) { // 226S
-			if (Arrays.asList( //
-					"Bayly & Burcher", //
-					"Lk Driveway" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Bayly & Burcher", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 232L) {
-			if (Arrays.asList( //
-					"Ajax Sta", // <>
-					"Rossland" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Rossland", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 291L) {
-			if (Arrays.asList( //
-					"Clements", //
-					"S - Harwood & Clements", //
-					"Pickering Town Ctr" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Town Ctr", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					"Clover Rdg", //
-					"Westwood" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Westwood", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 292l) {
-			if (Arrays.asList( //
-					"Clements", //
-					"Pickering Town Ctr" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Town Ctr", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 301L) {
-			if (Arrays.asList( //
-					S__ + "Rossland & Cochrane", //
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 302L) {
-			if (Arrays.asList( //
-					S__ + "Taunton", //
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 304L) {
-			if (Arrays.asList( //
-					B__ + "Lazio & Samandria", //
-					"Ontario Tech / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ontario Tech / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 305L) {
-			if (Arrays.asList( //
-					S__ + "Dryden & Thickson", //
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 308L) {
-			if (Arrays.asList( //
-					C__ + "Whitby Sta", //
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					C__ + "Ontario Shrs", //
-					"Ontario Shrs" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ontario Shrs", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 310L) {
-			if (Arrays.asList( //
-					"Brooklin", //
-					"UOIT / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 401L) {
-			if (Arrays.asList( //
-					"Cedar & Wentworth", //
-					"King", //
-					"UOIT / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					"King", //
-					B__ + "Wentworth", //
-					C__ + "Oshawa Sta", //
-					S__ + "Ctr & John", //
-					S__ + "Ritson & Wentworth", //
-					S__ + "Wentworth", //
-					"Lakeview Pk" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Lakeview Pk", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 401L + RID_ENDS_WITH_B) { // 401B
-			if (Arrays.asList( //
-					"UOIT / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					B__ + "Wentworth", //
-					S__ + "Ctr & John", //
-					"Lakeview Pk" // ++
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Lakeview Pk", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 403L) {
-			if (Arrays.asList( //
-					S__ + "Phillip Murray", //
-					"Phillip Murray", //
-					"Oshawa Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 405L) {
-			if (Arrays.asList( //
-					C__ + "Harmony Terminal", //
-					"Harmony Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					C__ + "Oshawa Ctr Terminal", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 407L) {
-			if (Arrays.asList( //
-					A__ + "Harmony Terminal", //
-					B__ + "Harmony Terminal", //
-					C__ + "Harmony Terminal", //
-					S__ + "Farewell & Raleigh", //
-					"Colonel Sam" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Colonel Sam", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					A__ + "Colonel Sam Dr", //
-					B__ + "Oshawa Ctr Terminal", //
-					C__ + "Harmony Terminal", //
-					"Harmony Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 407L + RID_ENDS_WITH_C) { // 407C
-			if (Arrays.asList( //
-					C__ + "Harmony Terminal", //
-					"Harmony Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 409L) {
-			if (Arrays.asList( //
-					A__ + "Oshawa Ctr Terminal", //
-					B__ + "Oshawa Ctr Terminal", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 410L) {
-			if (Arrays.asList( //
-					"Olive & Ritson", //
-					"S - Harmony & King", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 412L) {
-			if (Arrays.asList( //
-					B__ + "Townline Rd", //
-					"Townline Rd", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 414L) {
-			if (Arrays.asList( //
-					"Dean & Normandy", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 422L) {
-			if (Arrays.asList( //
-					S__ + "Ctr & King", //
-					"Oshawa Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Sta", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					"Simcoe & Conlin", //
-					"Simcoe & Windfields Farm Dr" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Simcoe & Windfields Farm Dr", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 506L) {
-			if (Arrays.asList( //
-					B__ + "Newcastle", //
-					"Orono" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Orono", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 603L) {
-			if (Arrays.asList( //
-					"Uxbridge", //
-					"Port Perry" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Port Perry", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 601L) {
-			if (Arrays.asList( //
-					"Uxbridge", // <>
-					"Beaverton" // <>
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Beaverton", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					"Uxbridge", // <>
-					B__ + "Sunderland", //
-					"Beaverton" // <>
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Beaverton", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					"Beaverton", // <>
-					B__ + "Uxbridge", //
-					"Uxbridge" // <>
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 900L) {
-			if (Arrays.asList( //
-					B__ + "Kingston & Whites", //
-					"UofT Scarborough" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UofT Scarborough", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					B__ + "Glenanna", //
-					"Scarborough" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Scarborough", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 901L) {
-			if (Arrays.asList( //
-					B__ + "Ritson", //
-					C__ + "Ctr & King", //
-					S__ + "Wentworth", //
-					"Lakeview Pk" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Lakeview Pk", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 902L) {
-			if (Arrays.asList( //
-					A__ + "Simpson Ave", //
-					B__ + "Trulls Rd", //
-					"Simpson Ave" // ++
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Simpson Ave", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					A__ + "Oshawa Sta", //
-					B__ + "Oshawa Ctr Terminal", //
-					"Oshawa Sta" // ++
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 905L) {
-			if (Arrays.asList( //
-					A__ + "Britannia Ave", //
-					B__ + "Uxbridge", //
-					"Uxbridge" // ++
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					A__ + "Britannia Ave", //
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 915L) {
-			if (Arrays.asList( //
-					S__ + "Salem & Taunton", //
-					"Salem", //
-					C__ + "Harmony Terminal", //
-					"Harmony Terminal", //
-					B__ + "Ontario Tech / DC North Campus", //
-					B__ + "UOIT / DC North Campus", //
-					"UOIT / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					D__ + "Ajax Sta", //
-					"Ajax Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ajax Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 916L) {
-			if (Arrays.asList( //
-					C__ + "Pickering Pkwy Terminal", //
-					"Pickering Pkwy Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Pickering Pkwy Terminal", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					C__ + "Harmony Terminal", //
-					"Harmony Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 917L) {
-			if (Arrays.asList( //
-					S__ + "Ajax Sta", //
-					"Oshawa Ctr Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Oshawa Ctr Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 922L) {
-			if (Arrays.asList( //
-					B__ + "Oshawa Sta", // ==
-					S__ + "Oshawa Sta", //
-					"Oshawa Sta", // ==
-					"Whitby Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Whitby Sta", mTrip.getHeadsignId());
-				return true;
-			} else if (Arrays.asList( //
-					B__ + "Oshawa Sta", // ==
-					S__ + "Oshawa Sta", //
-					"Oshawa Sta", // ==
-					"Townline & Nash", //
-					B__ + "Uxbridge", //
-					"Uxbridge", //
-					"Harmony Terminal" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Harmony Terminal", mTrip.getHeadsignId());
-				return true;
-			}
-		} else if (mTrip.getRouteId() == 950L) {
-			if (Arrays.asList( //
-					StringUtils.EMPTY, //
-					S__ + "Port Perry", //
-					B__ + "Port Perry", //
-					"Toronto & Brock (Uxbridge)", //
-					S__ + "Uxbridge (Toronto & Brock)", //
-					D__ + "Uxbridge (Toronto & Brock)", //
-					"Welwood Dr (Uxbridge)", //
-					F__ + "Uxbridge (Welwood)", //
-					C__ + "Uxbridge (Welwood)", //
-					D__ + "Uxbridge (Welwood)", //
-					B__ + "Uxbridge", //
-					C__ + "Uxbridge", //
-					G__ + "Uxbridge", //
-					"Uxbridge" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Uxbridge", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					H__ + "Ontario Tech / DC North Campus", //
-					F__ + "Ontario Tech / DC North Campus", //
-					"Ontario Tech / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Ontario Tech / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					C__ + "UOIT / DC North Campus", //
-					"UOIT / DC North Campus" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("UOIT / DC North Campus", mTrip.getHeadsignId());
-				return true;
-			}
-		}
+	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
 		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 	}
 
-	private static final Pattern TO = Pattern.compile("((^|\\W){1}(to)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final Pattern VIA = Pattern.compile("((^|\\W){1}(via)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
+	private static final Pattern DASH_ = Pattern.compile("( - | -|- )", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern START_WITH_RSN = Pattern.compile("(^[\\d]+[A-Z]? \\- )", Pattern.CASE_INSENSITIVE);
+	private static final Pattern START_WITH_RSN = Pattern.compile("(^[\\d]+[a-z]?)", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern LATE_NIGHT_SHUTTLE_ = Pattern.compile("((^|\\W){1}(late night shuttle)(\\W|$){1})", Pattern.CASE_INSENSITIVE);
-	private static final String LATE_NIGHT_SHUTTLE_REPLACEMENT = "$2$4";
+	private static final Pattern LATE_NIGHT_SHUTTLE_ = CleanUtils.cleanWords("late night shuttle");
 
+	private static final Pattern TERMINAL_ = CleanUtils.cleanWords("terminal");
+	private static final String TERMINAL_REPLACEMENT = CleanUtils.cleanWordsReplacement("Term");
+
+	@NotNull
 	@Override
-	public String cleanTripHeadsign(String tripHeadsign) {
-		Matcher matcherTO = TO.matcher(tripHeadsign);
-		if (matcherTO.find()) {
-			String gTripHeadsignAfterTO = tripHeadsign.substring(matcherTO.end());
-			tripHeadsign = gTripHeadsignAfterTO;
-		}
-		Matcher matcherVIA = VIA.matcher(tripHeadsign);
-		if (matcherVIA.find()) {
-			String gTripHeadsignBeforeVIA = tripHeadsign.substring(0, matcherVIA.start());
-			tripHeadsign = gTripHeadsignBeforeVIA;
-		}
-		tripHeadsign = START_WITH_RSN.matcher(tripHeadsign).replaceAll(StringUtils.EMPTY);
-		tripHeadsign = LATE_NIGHT_SHUTTLE_.matcher(tripHeadsign).replaceAll(LATE_NIGHT_SHUTTLE_REPLACEMENT);
+	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
+		tripHeadsign = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, tripHeadsign, getIgnoredWords());
+		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
+		tripHeadsign = DASH_.matcher(tripHeadsign).replaceAll(SPACE_);
+		tripHeadsign = START_WITH_RSN.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = LATE_NIGHT_SHUTTLE_.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = TERMINAL_.matcher(tripHeadsign).replaceAll(TERMINAL_REPLACEMENT);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.CLEAN_AT.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
@@ -1096,27 +379,16 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
 
-	private static final Pattern UOIT = Pattern.compile(String.format("((^|\\W){1}(%s)(\\W|$){1})", "uoit"), Pattern.CASE_INSENSITIVE);
-	private static final String UOIT_REPLACEMENT = String.format("$2%s$4", "UOIT");
-	private static final Pattern NORTHBOUND = Pattern.compile(String.format("((^|\\W){1}(%s)(\\W|$){1})", "northbound"), Pattern.CASE_INSENSITIVE);
-	private static final String NORTHBOUND_REPLACEMENT = String.format("$2%s$4", "NB");
-	private static final Pattern SOUTHBOUND = Pattern.compile(String.format("((^|\\W){1}(%s)(\\W|$){1})", "southbound"), Pattern.CASE_INSENSITIVE);
-	private static final String SOUTHBOUND_REPLACEMENT = String.format("$2%s$4", "SB");
-	private static final Pattern EASTBOUND = Pattern.compile(String.format("((^|\\W){1}(%s)(\\W|$){1})", "eastbound"), Pattern.CASE_INSENSITIVE);
-	private static final String EASTBOUND_REPLACEMENT = String.format("$2%s$4", "EB");
-	private static final Pattern WESTBOUND = Pattern.compile(String.format("((^|\\W){1}(%s)(\\W|$){1})", "westbound"), Pattern.CASE_INSENSITIVE);
-	private static final String WESTBOUND_REPLACEMENT = String.format("$2%s$4", "WB");
+	@NotNull
+	private String[] getIgnoredWords() {
+		return new String[]{"OPG", "UOIT"};
+	}
 
+	@NotNull
 	@Override
-	public String cleanStopName(String gStopName) {
-		if (Utils.isUppercaseOnly(gStopName, true, true)) {
-			gStopName = gStopName.toLowerCase(Locale.ENGLISH);
-		}
-		gStopName = UOIT.matcher(gStopName).replaceAll(UOIT_REPLACEMENT);
-		gStopName = NORTHBOUND.matcher(gStopName).replaceAll(NORTHBOUND_REPLACEMENT);
-		gStopName = SOUTHBOUND.matcher(gStopName).replaceAll(SOUTHBOUND_REPLACEMENT);
-		gStopName = EASTBOUND.matcher(gStopName).replaceAll(EASTBOUND_REPLACEMENT);
-		gStopName = WESTBOUND.matcher(gStopName).replaceAll(WESTBOUND_REPLACEMENT);
+	public String cleanStopName(@NotNull String gStopName) {
+		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, gStopName, getIgnoredWords());
+		gStopName = CleanUtils.cleanBounds(gStopName);
 		gStopName = CleanUtils.cleanSlashes(gStopName);
 		gStopName = CleanUtils.removePoints(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
@@ -1124,10 +396,11 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public int getStopId(GStop gStop) {
+	public int getStopId(@NotNull GStop gStop) {
 		if (!StringUtils.isEmpty(gStop.getStopCode()) && Utils.isDigitsOnly(gStop.getStopCode())) {
 			return Integer.parseInt(gStop.getStopCode()); // use stop code as stop ID
 		}
+		//noinspection deprecation
 		String stopId = gStop.getStopId();
 		stopId = CleanUtils.cleanMergedID(stopId);
 		if (stopId.equalsIgnoreCase("Stro Tree1:1")) {
