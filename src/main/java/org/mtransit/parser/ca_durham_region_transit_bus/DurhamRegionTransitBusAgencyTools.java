@@ -2,22 +2,15 @@ package org.mtransit.parser.ca_durham_region_transit_bus;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mtransit.parser.CleanUtils;
+import org.mtransit.commons.CharUtils;
+import org.mtransit.commons.CleanUtils;
+import org.mtransit.commons.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
-import org.mtransit.parser.StringUtils;
-import org.mtransit.parser.Utils;
-import org.mtransit.parser.gtfs.data.GCalendar;
-import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
-import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
-import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MAgency;
-import org.mtransit.parser.mt.data.MRoute;
-import org.mtransit.parser.mt.data.MTrip;
 
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,55 +24,19 @@ import static org.mtransit.parser.Constants.SPACE_;
 // https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
 public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
-	public static void main(@Nullable String[] args) {
-		if (args == null || args.length == 0) {
-			args = new String[3];
-			args[0] = "input/gtfs.zip";
-			args[1] = "../../mtransitapps/ca-durham-region-transit-bus-android/res/raw/";
-			args[2] = ""; // files-prefix
-		}
+	public static void main(@NotNull String[] args) {
 		new DurhamRegionTransitBusAgencyTools().start(args);
 	}
 
-	@Nullable
-	private HashSet<Integer> serviceIdInts;
-
+	@NotNull
 	@Override
-	public void start(@NotNull String[] args) {
-		MTLog.log("Generating DRT bus data...");
-		long start = System.currentTimeMillis();
-		this.serviceIdInts = extractUsefulServiceIdInts(args, this, true);
-		super.start(args);
-		MTLog.log("Generating DRT bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+	public String getAgencyName() {
+		return "DRT";
 	}
 
 	@Override
-	public boolean excludeCalendar(@NotNull GCalendar gCalendar) {
-		if (this.serviceIdInts != null) {
-			return excludeUselessCalendarInt(gCalendar, this.serviceIdInts);
-		}
-		return super.excludeCalendar(gCalendar);
-	}
-
-	@Override
-	public boolean excludingAll() {
-		return this.serviceIdInts != null && this.serviceIdInts.isEmpty();
-	}
-
-	@Override
-	public boolean excludeCalendarDate(@NotNull GCalendarDate gCalendarDates) {
-		if (this.serviceIdInts != null) {
-			return excludeUselessCalendarDateInt(gCalendarDates, this.serviceIdInts);
-		}
-		return super.excludeCalendarDate(gCalendarDates);
-	}
-
-	@Override
-	public boolean excludeTrip(@NotNull GTrip gTrip) {
-		if (this.serviceIdInts != null) {
-			return excludeUselessTripInt(gTrip, this.serviceIdInts);
-		}
-		return super.excludeTrip(gTrip);
+	public boolean defaultExcludeEnabled() {
+		return true;
 	}
 
 	@NotNull
@@ -101,13 +58,13 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public long getRouteId(@NotNull GRoute gRoute) {
-		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
+		if (CharUtils.isDigitsOnly(gRoute.getRouteShortName())) {
 			return Long.parseLong(gRoute.getRouteShortName());
 		}
-		Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
+		final Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
 		if (matcher.find()) {
-			int digits = Integer.parseInt(matcher.group());
-			String rsnLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
+			final int digits = Integer.parseInt(matcher.group());
+			final String rsnLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
 			if (rsnLC.endsWith("cs")) {
 				return digits + RID_ENDS_WITH_CS;
 			} else if (rsnLC.endsWith("sh")) {
@@ -170,162 +127,165 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@Nullable
 	@Override
 	public String getRouteColor(@NotNull GRoute gRoute) {
-		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
-			int rsn = Integer.parseInt(gRoute.getRouteShortName());
-			switch (rsn) {
-			// @formatter:off
-			case 101: return "6345A6";
-			case 103: return "F2C61D";
-			case 107: return "4866BA";
-			case 110: return "ED1C24";
-			case 111: return "2C3792";
-			case 112: return "2F684C";
-			case 120: return "CC8ACB";
-			case 181: return "A9A9A9"; // ???
-			case 182: return "A9A9A9"; // ???
-			case 193: return "00ADEF";
-			case 199: return "AC74C1";
-			case 215: return "9587B7";
-			case 216: return "754C29";
-			case 217: return "0075BF";
-			case 218: return "988FD0";
-			case 219: return "4D71C1";
-			case 221: return "F3B722";
-			case 222: return "54C6BD";
-			case 223: return "602C83";
-			case 224: return "64C430";
-			case 225: return "9A8D7D";
-			case 226: return "6345A6";
-			case 232: return "EE2428";
-			case 283: return "A9A9A9"; // ???
-			case 284: return "A9A9A9"; // ???
-			case 291: return "33B652";
-			case 301: return "8D3CA3";
-			case 302: return "EE2428";
-			case 303: return "6EC95F";
-			case 304: return "79D0ED";
-			case 305: return "8448a9";
-			case 308: return "AC57B2";
-			case 310: return "DFC463";
-			case 312: return "AAA8A9";
-			case 318: return "9BA821";
-			case 385: return "A9A9A9"; // ???
-			case 401: return "EE2428";
-			case 402: return "6E2932";
-			case 403: return "4E5BB3";
-			case 405: return "C6A218";
-			case 406: return "00ADEF";
-			case 407: return "AAA8A9";
-			case 408: return "ED1C24";
-			case 409: return "4159B1";
-			case 410: return "A14A94";
-			case 411: return "536DBE";
-			case 412: return "85D168";
-			case 414: return "CE92CF";
-			case 416: return "EC5788";
-			case 417: return "74459B";
-			case 420: return "324954";
-			case 422: return "EA6C14";
-			case 501: return "2D4CA3";
-			case 502: return "5FC3F0";
-			case 506: return "F14823";
-			case 601: return "2D4CA3";
-			case 603: return "F14623";
-			case 653: return "8D188F";
-			case 654: return "293D9B";
-			case 750: return null; // TODO
-			case 752: return null; // TODO
-			case 801: return "4EA3DD";
-			case 900: return "DE581E"; // PULSE
-			case 901: return "DE581E"; // PULSE
-			case 902: return null; // TODO
-			case 905: return null; // TODO
-			case 910: return "75AC95";
-			case 915: return "36612B";
-			case 916: return "5D1B1E";
-			case 917: return null; // TODO
-			case 922: return "231F20";
-			case 923: return "65A930";
-			case 950: return "87CF25";
-			case 960: return "B2D235";
-			case 980: return null; // TODO
-			// @formatter:on
+		if (StringUtils.isEmpty(gRoute.getRouteColor())) {
+			if (CharUtils.isDigitsOnly(gRoute.getRouteShortName())) {
+				final int rsn = Integer.parseInt(gRoute.getRouteShortName());
+				switch (rsn) {
+				// @formatter:off
+				case 101: return "6345A6";
+				case 103: return "F2C61D";
+				case 107: return "4866BA";
+				case 110: return "ED1C24";
+				case 111: return "2C3792";
+				case 112: return "2F684C";
+				case 120: return "CC8ACB";
+				case 181: return "A9A9A9"; // ???
+				case 182: return "A9A9A9"; // ???
+				case 193: return "00ADEF";
+				case 199: return "AC74C1";
+				case 215: return "9587B7";
+				case 216: return "754C29";
+				case 217: return "0075BF";
+				case 218: return "988FD0";
+				case 219: return "4D71C1";
+				case 221: return "F3B722";
+				case 222: return "54C6BD";
+				case 223: return "602C83";
+				case 224: return "64C430";
+				case 225: return "9A8D7D";
+				case 226: return "6345A6";
+				case 232: return "EE2428";
+				case 283: return "A9A9A9"; // ???
+				case 284: return "A9A9A9"; // ???
+				case 291: return "33B652";
+				case 301: return "8D3CA3";
+				case 302: return "EE2428";
+				case 303: return "6EC95F";
+				case 304: return "79D0ED";
+				case 305: return "8448a9";
+				case 308: return "AC57B2";
+				case 310: return "DFC463";
+				case 312: return "AAA8A9";
+				case 318: return "9BA821";
+				case 385: return "A9A9A9"; // ???
+				case 401: return "EE2428";
+				case 402: return "6E2932";
+				case 403: return "4E5BB3";
+				case 405: return "C6A218";
+				case 406: return "00ADEF";
+				case 407: return "AAA8A9";
+				case 408: return "ED1C24";
+				case 409: return "4159B1";
+				case 410: return "A14A94";
+				case 411: return "536DBE";
+				case 412: return "85D168";
+				case 414: return "CE92CF";
+				case 416: return "EC5788";
+				case 417: return "74459B";
+				case 420: return "324954";
+				case 422: return "EA6C14";
+				case 501: return "2D4CA3";
+				case 502: return "5FC3F0";
+				case 506: return "F14823";
+				case 601: return "2D4CA3";
+				case 603: return "F14623";
+				case 653: return "8D188F";
+				case 654: return "293D9B";
+				case 750: return null; // TODO
+				case 752: return null; // TODO
+				case 801: return "4EA3DD";
+				case 900: return "DE581E"; // PULSE
+				case 901: return "DE581E"; // PULSE
+				case 902: return null; // TODO
+				case 905: return null; // TODO
+				case 910: return "75AC95";
+				case 915: return "36612B";
+				case 916: return "5D1B1E";
+				case 917: return null; // TODO
+				case 922: return "231F20";
+				case 923: return "65A930";
+				case 950: return "87CF25";
+				case 960: return "B2D235";
+				case 980: return null; // TODO
+				// @formatter:on
+				}
 			}
+			if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "6345A6"; // 101
+			} else if ("103B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "A7516D";
+			} else if ("110A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "ED1C24"; // 110
+			} else if ("110B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "ED1C24"; // 110
+			} else if ("110sh".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "ED1C24"; // 110
+			} else if ("111A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "2C3792"; // 111
+			} else if ("111S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "2C3792"; // 111
+			} else if ("112CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "2F684C"; // 112
+			} else if ("112SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "2F684C"; // 112
+			} else if ("193A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "00ADEF"; // 193
+			} else if ("193B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "00ADEF"; // 193
+			} else if ("218D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "988FD0"; // 218
+			} else if ("219C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "4D71C1"; // 219
+			} else if ("219D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "4D71C1"; // 219
+			} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "4D71C1"; // 219
+			} else if ("221D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "F3B722"; // 221
+			} else if ("223C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "602C83"; // 223
+			} else if ("224D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "64C430"; // 224
+			} else if ("224DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "64C430"; // 224 //
+			} else if ("225A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "9A8D7D"; // 225
+			} else if ("226S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "6345A6"; // 226
+			} else if ("232S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "EE2428"; // 232
+			} else if ("308C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "AC57B2"; // 308
+			} else if ("318SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "9BA821"; // 318
+			} else if ("401B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "8AD9F2";
+			} else if ("401C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "6C57B1";
+			} else if ("402B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "9BA821";
+			} else if ("407S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "AAA8A9"; // 407
+			} else if ("407C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "AAA8A9"; // 407
+			} else if ("407CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "AAA8A9"; // 407
+			} else if ("410S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "A14A94"; // 410
+			} else if ("411S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "536DBE"; // 411
+			} else if ("412S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "85D168"; // 412
+			} else if ("412CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "85D168"; // 412
+			} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "9BA821";
+			} else if ("922B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+				return "3DA87F";
+			}
+			throw new MTLog.Fatal("Unexpected route color %s!", gRoute.toStringPlus());
 		}
-		if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "6345A6"; // 101
-		} else if ("103B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "A7516D";
-		} else if ("110A".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "ED1C24"; // 110
-		} else if ("110B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "ED1C24"; // 110
-		} else if ("110sh".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "ED1C24"; // 110
-		} else if ("111A".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "2C3792"; // 111
-		} else if ("111S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "2C3792"; // 111
-		} else if ("112CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "2F684C"; // 112
-		} else if ("112SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "2F684C"; // 112
-		} else if ("193A".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "00ADEF"; // 193
-		} else if ("193B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "00ADEF"; // 193
-		} else if ("218D".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "988FD0"; // 218
-		} else if ("219C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "4D71C1"; // 219
-		} else if ("219D".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "4D71C1"; // 219
-		} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "4D71C1"; // 219
-		} else if ("221D".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "F3B722"; // 221
-		} else if ("223C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "602C83"; // 223
-		} else if ("224D".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "64C430"; // 224
-		} else if ("224DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "64C430"; // 224 //
-		} else if ("225A".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "9A8D7D"; // 225
-		} else if ("226S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "6345A6"; // 226
-		} else if ("232S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "EE2428"; // 232
-		} else if ("308C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "AC57B2"; // 308
-		} else if ("318SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "9BA821"; // 318
-		} else if ("401B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "8AD9F2";
-		} else if ("401C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "6C57B1";
-		} else if ("402B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "9BA821";
-		} else if ("407S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "AAA8A9"; // 407
-		} else if ("407C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "AAA8A9"; // 407
-		} else if ("407CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "AAA8A9"; // 407
-		} else if ("410S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "A14A94"; // 410
-		} else if ("411S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "536DBE"; // 411
-		} else if ("412S".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "85D168"; // 412
-		} else if ("412CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "85D168"; // 412
-		} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "9BA821";
-		} else if ("922B".equalsIgnoreCase(gRoute.getRouteShortName())) {
-			return "3DA87F";
-		}
-		throw new MTLog.Fatal("Unexpected route color %s!", gRoute.toStringPlus());
+		return super.getRouteColor(gRoute);
 	}
 
 	@NotNull
@@ -336,31 +296,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
-		mTrip.setHeadsignString(
-				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()),
-				gTrip.getDirectionIdOrDefault()
-		);
-	}
-
-	@Override
 	public boolean directionFinderEnabled() {
 		return true;
 	}
 
-	@Override
-	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
-		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
-	}
-
 	private static final Pattern DASH_ = Pattern.compile("( - | -|- )", Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern START_WITH_RSN = Pattern.compile("(^[\\d]+[a-z]?)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern START_WITH_RSN = Pattern.compile("(^[\\d]+)", Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern STARTS_WITH_LETTER_ = Pattern.compile("(^([A-Z])\\s?-\\s?)");
+	private static final String STARTS_WITH_LETTER_REPLACEMENT = "$2 ";
 
 	private static final Pattern LATE_NIGHT_SHUTTLE_ = CleanUtils.cleanWords("late night shuttle");
-
-	private static final Pattern TERMINAL_ = CleanUtils.cleanWords("terminal");
-	private static final String TERMINAL_REPLACEMENT = CleanUtils.cleanWordsReplacement("Term");
 
 	@NotNull
 	@Override
@@ -369,8 +316,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
 		tripHeadsign = DASH_.matcher(tripHeadsign).replaceAll(SPACE_);
 		tripHeadsign = START_WITH_RSN.matcher(tripHeadsign).replaceAll(EMPTY);
+		tripHeadsign = STARTS_WITH_LETTER_.matcher(tripHeadsign).replaceAll(STARTS_WITH_LETTER_REPLACEMENT);
 		tripHeadsign = LATE_NIGHT_SHUTTLE_.matcher(tripHeadsign).replaceAll(EMPTY);
-		tripHeadsign = TERMINAL_.matcher(tripHeadsign).replaceAll(TERMINAL_REPLACEMENT);
 		tripHeadsign = CleanUtils.cleanSlashes(tripHeadsign);
 		tripHeadsign = CleanUtils.CLEAN_AT.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		tripHeadsign = CleanUtils.CLEAN_AND.matcher(tripHeadsign).replaceAll(CleanUtils.CLEAN_AND_REPLACEMENT);
@@ -381,7 +328,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@NotNull
 	private String[] getIgnoredWords() {
-		return new String[]{"OPG", "UOIT"};
+		return new String[]{
+				"OPG", "UOIT",
+		};
 	}
 
 	@NotNull
@@ -390,19 +339,19 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, gStopName, getIgnoredWords());
 		gStopName = CleanUtils.cleanBounds(gStopName);
 		gStopName = CleanUtils.cleanSlashes(gStopName);
-		gStopName = CleanUtils.removePoints(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
 	}
 
 	@Override
 	public int getStopId(@NotNull GStop gStop) {
-		if (!StringUtils.isEmpty(gStop.getStopCode()) && Utils.isDigitsOnly(gStop.getStopCode())) {
-			return Integer.parseInt(gStop.getStopCode()); // use stop code as stop ID
+		final String stopCode = gStop.getStopCode();
+		if (!StringUtils.isEmpty(stopCode)
+				&& CharUtils.isDigitsOnly(stopCode)) {
+			return Integer.parseInt(stopCode); // use stop code as stop ID
 		}
 		//noinspection deprecation
-		String stopId = gStop.getStopId();
-		stopId = CleanUtils.cleanMergedID(stopId);
+		final String stopId = CleanUtils.cleanMergedID(gStop.getStopId());
 		if (stopId.equalsIgnoreCase("Stro Tree1:1")) {
 			return 1000001546;
 		} else if (stopId.equalsIgnoreCase("King Live3:1")) {
