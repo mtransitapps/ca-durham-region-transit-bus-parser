@@ -56,6 +56,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final long RID_ENDS_WITH_D = 40_000L;
 	private static final long RID_ENDS_WITH_S = 190_000L;
 
+	private static final long RID_STARTS_WITH_N = 140_000L;
+
 	@Override
 	public long getRouteId(@NotNull GRoute gRoute) {
 		if (CharUtils.isDigitsOnly(gRoute.getRouteShortName())) {
@@ -70,7 +72,9 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			} else if (rsnLC.endsWith("sh")) {
 				return digits + RID_ENDS_WITH_SH;
 			}
-			if (rsnLC.endsWith("a")) {
+			if (rsnLC.startsWith("n")) {
+				return digits + RID_STARTS_WITH_N;
+			} else if (rsnLC.endsWith("a")) {
 				return digits + RID_ENDS_WITH_A;
 			} else if (rsnLC.endsWith("b")) {
 				return digits + RID_ENDS_WITH_B;
@@ -81,7 +85,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			} else if (rsnLC.endsWith("s")) {
 				return digits + RID_ENDS_WITH_S;
 			}
-			throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute);
+			throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute.toStringPlus());
 		}
 		return super.getRouteId(gRoute);
 	}
