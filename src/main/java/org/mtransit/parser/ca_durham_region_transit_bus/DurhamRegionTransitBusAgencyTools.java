@@ -1,5 +1,8 @@
 package org.mtransit.parser.ca_durham_region_transit_bus;
 
+import static org.mtransit.commons.Constants.EMPTY;
+import static org.mtransit.commons.Constants.SPACE_;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mtransit.commons.CharUtils;
@@ -12,11 +15,7 @@ import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.mt.data.MAgency;
 
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.mtransit.parser.Constants.EMPTY;
-import static org.mtransit.parser.Constants.SPACE_;
 
 // http://opendata.durham.ca/
 // https://maps.durham.ca/OpenDataGTFS/GTFS_Durham_TXT.zip
@@ -45,49 +44,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
-	private static final Pattern DIGITS = Pattern.compile("[\\d]+");
-
-	private static final long RID_ENDS_WITH_CS = 3_080_000L;
-	private static final long RID_ENDS_WITH_SH = 19_080_000L;
-
-	private static final long RID_ENDS_WITH_A = 10_000L;
-	private static final long RID_ENDS_WITH_B = 20_000L;
-	private static final long RID_ENDS_WITH_C = 30_000L;
-	private static final long RID_ENDS_WITH_D = 40_000L;
-	private static final long RID_ENDS_WITH_S = 190_000L;
-
-	private static final long RID_STARTS_WITH_N = 140_000L;
+	@Override
+	public boolean defaultRouteIdEnabled() {
+		return true;
+	}
 
 	@Override
-	public long getRouteId(@NotNull GRoute gRoute) {
-		if (CharUtils.isDigitsOnly(gRoute.getRouteShortName())) {
-			return Long.parseLong(gRoute.getRouteShortName());
-		}
-		final Matcher matcher = DIGITS.matcher(gRoute.getRouteShortName());
-		if (matcher.find()) {
-			final int digits = Integer.parseInt(matcher.group());
-			final String rsnLC = gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH);
-			if (rsnLC.endsWith("cs")) {
-				return digits + RID_ENDS_WITH_CS;
-			} else if (rsnLC.endsWith("sh")) {
-				return digits + RID_ENDS_WITH_SH;
-			}
-			if (rsnLC.startsWith("n")) {
-				return digits + RID_STARTS_WITH_N;
-			} else if (rsnLC.endsWith("a")) {
-				return digits + RID_ENDS_WITH_A;
-			} else if (rsnLC.endsWith("b")) {
-				return digits + RID_ENDS_WITH_B;
-			} else if (rsnLC.endsWith("c")) {
-				return digits + RID_ENDS_WITH_C;
-			} else if (rsnLC.endsWith("d")) {
-				return digits + RID_ENDS_WITH_D;
-			} else if (rsnLC.endsWith("s")) {
-				return digits + RID_ENDS_WITH_S;
-			}
-			throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute.toStringPlus());
-		}
-		return super.getRouteId(gRoute);
+	public boolean useRouteShortNameForRouteId() {
+		return true;
 	}
 
 	@NotNull
@@ -118,22 +82,18 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		return super.getRouteLongName(gRoute);
 	}
 
-	private static final String AGENCY_COLOR_GREEN = "006F3C"; // GREEN (from web site CSS)
-
-	private static final String AGENCY_COLOR = AGENCY_COLOR_GREEN;
-
-	@NotNull
 	@Override
-	public String getAgencyColor() {
-		return AGENCY_COLOR;
+	public boolean defaultAgencyColorEnabled() {
+		return true;
 	}
 
 	@Nullable
 	@Override
-	public String getRouteColor(@NotNull GRoute gRoute) {
+	public String getRouteColor(@NotNull GRoute gRoute, @NotNull MAgency agency) {
 		if (StringUtils.isEmpty(gRoute.getRouteColor())) {
-			if (CharUtils.isDigitsOnly(gRoute.getRouteShortName())) {
-				final int rsn = Integer.parseInt(gRoute.getRouteShortName());
+			final String rsnS = gRoute.getRouteShortName();
+			if (CharUtils.isDigitsOnly(rsnS)) {
+				final int rsn = Integer.parseInt(rsnS);
 				switch (rsn) {
 				// @formatter:off
 				case 101: return "6345A6";
@@ -214,82 +174,82 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 				// @formatter:on
 				}
 			}
-			if ("101A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			if ("101A".equalsIgnoreCase(rsnS)) {
 				return "6345A6"; // 101
-			} else if ("103B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("103B".equalsIgnoreCase(rsnS)) {
 				return "A7516D";
-			} else if ("110A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("110A".equalsIgnoreCase(rsnS)) {
 				return "ED1C24"; // 110
-			} else if ("110B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("110B".equalsIgnoreCase(rsnS)) {
 				return "ED1C24"; // 110
-			} else if ("110sh".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("110sh".equalsIgnoreCase(rsnS)) {
 				return "ED1C24"; // 110
-			} else if ("111A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("111A".equalsIgnoreCase(rsnS)) {
 				return "2C3792"; // 111
-			} else if ("111S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("111S".equalsIgnoreCase(rsnS)) {
 				return "2C3792"; // 111
-			} else if ("112CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("112CS".equalsIgnoreCase(rsnS)) {
 				return "2F684C"; // 112
-			} else if ("112SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("112SH".equalsIgnoreCase(rsnS)) {
 				return "2F684C"; // 112
-			} else if ("193A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("193A".equalsIgnoreCase(rsnS)) {
 				return "00ADEF"; // 193
-			} else if ("193B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("193B".equalsIgnoreCase(rsnS)) {
 				return "00ADEF"; // 193
-			} else if ("218D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("218D".equalsIgnoreCase(rsnS)) {
 				return "988FD0"; // 218
-			} else if ("219C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("219C".equalsIgnoreCase(rsnS)) {
 				return "4D71C1"; // 219
-			} else if ("219D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("219D".equalsIgnoreCase(rsnS)) {
 				return "4D71C1"; // 219
-			} else if ("219DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("219DSH".equalsIgnoreCase(rsnS)) {
 				return "4D71C1"; // 219
-			} else if ("221D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("221D".equalsIgnoreCase(rsnS)) {
 				return "F3B722"; // 221
-			} else if ("223C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("223C".equalsIgnoreCase(rsnS)) {
 				return "602C83"; // 223
-			} else if ("224D".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("224D".equalsIgnoreCase(rsnS)) {
 				return "64C430"; // 224
-			} else if ("224DSH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("224DSH".equalsIgnoreCase(rsnS)) {
 				return "64C430"; // 224 //
-			} else if ("225A".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("225A".equalsIgnoreCase(rsnS)) {
 				return "9A8D7D"; // 225
-			} else if ("226S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("226S".equalsIgnoreCase(rsnS)) {
 				return "6345A6"; // 226
-			} else if ("232S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("232S".equalsIgnoreCase(rsnS)) {
 				return "EE2428"; // 232
-			} else if ("308C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("308C".equalsIgnoreCase(rsnS)) {
 				return "AC57B2"; // 308
-			} else if ("318SH".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("318SH".equalsIgnoreCase(rsnS)) {
 				return "9BA821"; // 318
-			} else if ("401B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("401B".equalsIgnoreCase(rsnS)) {
 				return "8AD9F2";
-			} else if ("401C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("401C".equalsIgnoreCase(rsnS)) {
 				return "6C57B1";
-			} else if ("402B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("402B".equalsIgnoreCase(rsnS)) {
 				return "9BA821";
-			} else if ("407S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("407S".equalsIgnoreCase(rsnS)) {
 				return "AAA8A9"; // 407
-			} else if ("407C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("407C".equalsIgnoreCase(rsnS)) {
 				return "AAA8A9"; // 407
-			} else if ("407CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("407CS".equalsIgnoreCase(rsnS)) {
 				return "AAA8A9"; // 407
-			} else if ("410S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("410S".equalsIgnoreCase(rsnS)) {
 				return "A14A94"; // 410
-			} else if ("411S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("411S".equalsIgnoreCase(rsnS)) {
 				return "536DBE"; // 411
-			} else if ("412S".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("412S".equalsIgnoreCase(rsnS)) {
 				return "85D168"; // 412
-			} else if ("412CS".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("412CS".equalsIgnoreCase(rsnS)) {
 				return "85D168"; // 412
-			} else if ("910C".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("910C".equalsIgnoreCase(rsnS)) {
 				return "9BA821";
-			} else if ("922B".equalsIgnoreCase(gRoute.getRouteShortName())) {
+			} else if ("922B".equalsIgnoreCase(rsnS)) {
 				return "3DA87F";
 			}
 			throw new MTLog.Fatal("Unexpected route color %s!", gRoute.toStringPlus());
 		}
-		return super.getRouteColor(gRoute);
+		return super.getRouteColor(gRoute, agency);
 	}
 
 	@NotNull
