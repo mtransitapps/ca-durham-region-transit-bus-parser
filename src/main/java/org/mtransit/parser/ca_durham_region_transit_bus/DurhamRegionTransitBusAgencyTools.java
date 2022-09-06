@@ -44,6 +44,13 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
+	@NotNull
+	@Override
+	public String cleanRouteOriginalId(@NotNull String gRouteId) {
+		gRouteId = CleanUtils.cleanMergedID(gRouteId);
+		return gRouteId;
+	}
+
 	@Override
 	public boolean defaultRouteIdEnabled() {
 		return true;
@@ -168,74 +175,10 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		}
 		//noinspection deprecation
 		final String stopId = CleanUtils.cleanMergedID(gStop.getStopId());
-		if (stopId.equalsIgnoreCase("Stro Tree1:1")) {
-			return 1000001546;
-		} else if (stopId.equalsIgnoreCase("King Live3:1")) {
-			return 1000001609;
-		} else if (stopId.equalsIgnoreCase("Came Ann1:1")) {
-			return 93549;
-		} else if (stopId.equalsIgnoreCase("Audl Horn:1")) {
-			return 1000000001;
-		} else if (stopId.equalsIgnoreCase("OldK Eliz:1")) {
-			return 1000000002;
-		} else if (stopId.equalsIgnoreCase("Stev Crei1:1")) {
-			return 1000000003;
-		} else if (stopId.equalsIgnoreCase("Harm Capr:1")) {
-			return 1000000004;
-		} else if (stopId.equalsIgnoreCase("Park Buen:1")) {
-			return 1000000005;
-		} else if (stopId.equalsIgnoreCase("Main Duch:1")) {
-			return 1000000006;
-		} else if (stopId.equalsIgnoreCase("Main Wint:1")) {
-			return 1000000007;
-		} else if (stopId.equalsIgnoreCase("Adel Came:1")) {
-			return 1000000008;
-		} else if (stopId.equalsIgnoreCase("Broc Quak:1")) {
-			return 1000000009;
-		} else if (stopId.equalsIgnoreCase("Main Dall:1")) {
-			return 1000000010;
-		} else if (stopId.equalsIgnoreCase("Audl Horn1:1")) {
-			return 1000000011;
-		} else if (stopId.equalsIgnoreCase("Wils Shak1:1")) {
-			return 1000000012;
-		} else if (stopId.equalsIgnoreCase("Wils Shak:1")) {
-			return 1000000013;
-		} else if (stopId.equalsIgnoreCase("Base RR5711")) {
-			return 1000000014;
-		} else if (stopId.equalsIgnoreCase("Shoa Marj11")) {
-			return 1000000015;
-		} else if (stopId.equalsIgnoreCase("Ross Chur1")) {
-			return 3430;
-		} else if (stopId.equalsIgnoreCase("Ross South11")) {
-			return 1000000017;
-		} else if (stopId.equalsIgnoreCase("Audl Dona21")) {
-			return 1000000018;
-		} else if (stopId.equalsIgnoreCase("Ross SouthW1")) {
-			return 1000000019;
-		} else if (stopId.equalsIgnoreCase("Alto Sha21")) {
-			return 1000000020;
-		} else if (stopId.equalsIgnoreCase("Segg Brad1")) {
-			return 1000000021;
-		} else if (stopId.equalsIgnoreCase("Segg Armi1")) {
-			return 1000000022;
-		} else if (stopId.equalsIgnoreCase("Segg West1")) {
-			return 1000000023;
-		} else if (stopId.equalsIgnoreCase("Segg Good1")) {
-			return 1000000024;
-		} else if (stopId.equalsIgnoreCase("Segg Will1")) {
-			return 1000000025;
-		} else if (stopId.equalsIgnoreCase("Aud Denn1")) {
-			return 1000000026;
-		} else if (stopId.equalsIgnoreCase("Aud Denn21")) {
-			return 1000000027;
-		} else if (stopId.equalsIgnoreCase("Carn Bald11")) {
-			return 1000000028;
-		} else if (stopId.equalsIgnoreCase("Carn Brad1")) {
-			return 1000000029;
-		} else if (stopId.equalsIgnoreCase("Carn Way1")) {
-			return 1000000030;
-		} else {
-			return Math.abs(stopId.hashCode());
+		if (!StringUtils.isEmpty(stopId)
+				&& CharUtils.isDigitsOnly(stopId)) {
+			return Integer.parseInt(stopId);
 		}
+		throw new MTLog.Fatal("Unexpected stop ID '%s' for %s!", stopId, gStop.toStringPlus(true));
 	}
 }
