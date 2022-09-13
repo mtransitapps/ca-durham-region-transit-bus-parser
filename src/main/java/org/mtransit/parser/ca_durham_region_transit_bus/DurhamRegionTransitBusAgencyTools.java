@@ -10,6 +10,7 @@ import org.mtransit.commons.CleanUtils;
 import org.mtransit.commons.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
+import org.mtransit.parser.gtfs.data.GRoute;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MTrip;
@@ -36,6 +37,14 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public boolean defaultExcludeEnabled() {
 		return true;
+	}
+
+	@Override
+	public boolean excludeRoute(@NotNull GRoute gRoute) {
+		if (gRoute.getRouteShortName().startsWith("copy of")) {
+			return EXCLUDE;
+		}
+		return super.excludeRoute(gRoute);
 	}
 
 	@NotNull
@@ -166,6 +175,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabel(gStopName);
 	}
 
+	private static final Pattern ENDS_WITH_DASH_1_ = Pattern.compile("(:1$)", Pattern.CASE_INSENSITIVE);
+
 	@Override
 	public int getStopId(@NotNull GStop gStop) {
 		final String stopCode = gStop.getStopCode();
@@ -174,7 +185,8 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return Integer.parseInt(stopCode); // use stop code as stop ID
 		}
 		//noinspection deprecation
-		final String stopId = CleanUtils.cleanMergedID(gStop.getStopId());
+		String stopId = CleanUtils.cleanMergedID(gStop.getStopId());
+		stopId = ENDS_WITH_DASH_1_.matcher(stopId).replaceAll(EMPTY);
 		if (!StringUtils.isEmpty(stopId)
 				&& CharUtils.isDigitsOnly(stopId)) {
 			return Integer.parseInt(stopId);
