@@ -82,6 +82,13 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@NotNull
 	@Override
+	public String getRouteShortName(@NotNull GRoute gRoute) {
+		//noinspection deprecation
+		return gRoute.getRouteId(); // used by GTFS-RT
+	}
+
+	@NotNull
+	@Override
 	public String cleanStopOriginalId(@NotNull String gStopId) {
 		gStopId = CleanUtils.cleanMergedID(gStopId);
 		return gStopId;
@@ -192,5 +199,16 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 			return Integer.parseInt(stopId);
 		}
 		throw new MTLog.Fatal("Unexpected stop ID '%s' for %s!", stopId, gStop.toStringPlus(true));
+	}
+
+	@NotNull
+	@Override
+	public String getStopCode(@NotNull GStop gStop) {
+		//noinspection deprecation
+		String stopId = CleanUtils.cleanMergedID(gStop.getStopId()); // used by GTFS-RT
+		if (!StringUtils.isEmpty(stopId)) {
+			return stopId;
+		}
+		throw new MTLog.Fatal("Unexpected stop code '%s' for %s!", stopId, gStop.toStringPlus(true));
 	}
 }
