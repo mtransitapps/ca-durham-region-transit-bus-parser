@@ -15,7 +15,6 @@ import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MTrip;
 
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 // http://opendata.durham.ca/
@@ -26,12 +25,6 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(@NotNull String[] args) {
 		new DurhamRegionTransitBusAgencyTools().start(args);
-	}
-
-	@NotNull
-	@Override
-	public String getAgencyName() {
-		return "DRT";
 	}
 
 	@Override
@@ -67,7 +60,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean useRouteShortNameForRouteId() {
-		return true;
+		return false; // used by GTFS-RT
 	}
 
 	@Override
@@ -84,7 +77,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String getRouteShortName(@NotNull GRoute gRoute) {
 		//noinspection deprecation
-		return gRoute.getRouteId(); // used by GTFS-RT
+		return cleanRouteOriginalId(gRoute.getRouteId()); // used by GTFS-RT
 	}
 
 	@NotNull
@@ -151,7 +144,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@NotNull
 	@Override
 	public String cleanTripHeadsign(@NotNull String tripHeadsign) {
-		tripHeadsign = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, tripHeadsign, getIgnoredWords());
+		tripHeadsign = CleanUtils.toLowerCaseUpperCaseWords(getFirstLanguageNN(), tripHeadsign, getIgnoredWords());
 		tripHeadsign = CleanUtils.keepToAndRemoveVia(tripHeadsign);
 		tripHeadsign = DASH_.matcher(tripHeadsign).replaceAll(SPACE_);
 		tripHeadsign = START_WITH_RSN.matcher(tripHeadsign).replaceAll(EMPTY);
@@ -175,7 +168,7 @@ public class DurhamRegionTransitBusAgencyTools extends DefaultAgencyTools {
 	@NotNull
 	@Override
 	public String cleanStopName(@NotNull String gStopName) {
-		gStopName = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, gStopName, getIgnoredWords());
+		gStopName = CleanUtils.toLowerCaseUpperCaseWords(getFirstLanguageNN(), gStopName, getIgnoredWords());
 		gStopName = CleanUtils.cleanBounds(gStopName);
 		gStopName = CleanUtils.cleanSlashes(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
